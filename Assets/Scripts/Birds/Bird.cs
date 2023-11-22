@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class Bird : MonoBehaviour
 {
+    [SerializeField] SpriteRenderer spriteRenderer; 
     [SerializeField] LayerMask branchMask;
     [SerializeField] int distanceToFind;
     [SerializeField] int speed;
@@ -9,9 +10,13 @@ public class Bird : MonoBehaviour
     [SerializeField] Zone zoneToMove;
     BranchFinder branchFinder;
     bool inZone;
-    bool angry;
     float angryTime = 2;
     float angryTimer;
+    Transform angryTransform;
+    float followTime = 4;
+    float followTimer;
+    Transform followTransform;
+
 
     private void Awake()
     {
@@ -19,6 +24,17 @@ public class Bird : MonoBehaviour
     }
     void Update()
     {
+        if (angryTransform != null)
+        {
+            EscapeFromObject();
+            return;
+        }
+        if (followTransform != null)
+        {
+            FollowObject();
+            return;
+        }
+
         if (inZone) return;
 
         TryFindZoneFromABranch();
@@ -26,18 +42,59 @@ public class Bird : MonoBehaviour
         if (zoneToMove != null)
             MoveToZone();
     }
+
+
     private void LateUpdate()
     {
         transform.up = rb.velocity;
     }
 
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.TryGetComponent<FollowObject>(out FollowObject followObject))
+        {
+            Destroy(followObject.gameObject);
+        }
+
+    }
     private void OnTriggerEnter2D(Collider2D collision)
     {
         ArrivedObjetiveZone(collision);
+
+        AngryObjectNear(collision);
+        ToFollowObjectNear(collision);
     }
+
+
     private void OnTriggerExit2D(Collider2D collision)
     {
         ExitArrivedZone(collision);
+    }
+     void AngryObjectNear(Collider2D collision)
+    {
+        if (collision.TryGetComponent<AngryObject>(out AngryObject angryObject))
+        {
+            angryTransform = angryObject.transform;
+            angryTimer = angryTime;
+        }
+    }
+     void ToFollowObjectNear(Collider2D collision)
+    {
+        if (collision.TryGetComponent<FollowObject>(out FollowObject followObject))
+        {
+            followTransform = followObject.transform;
+            followTimer = followTime;
+        }
+    }
+
+    public void SetColor(Color color)
+    {
+        spriteRenderer.color = color;
+    }
+
+    public Color GetColor()
+    {
+        return spriteRenderer.color;
     }
 
     void ArrivedObjetiveZone(Collider2D collision)
@@ -59,6 +116,27 @@ public class Bird : MonoBehaviour
             zoneToMove = null;
         }
     }
+    void EscapeFromObject()
+    {
+        angryTimer -= Time.deltaTime;
+
+        rb.velocity = (transform.position - angryTransform.position).normalized * speed;
+        if (angryTimer <= 0)
+        {
+            angryTransform = null;
+        }
+    }
+    void FollowObject()
+    {
+        followTimer -= Time.deltaTime;
+
+        rb.velocity = (followTransform.position - transform.position).normalized * speed;
+        if (followTimer <= 0)
+        {
+            followTransform = null;
+        }
+    }
+
     void TryFindZoneFromABranch() 
         => zoneToMove
             = branchFinder
@@ -69,4 +147,3 @@ public class Bird : MonoBehaviour
     void MoveToZone() 
         => rb.velocity = (zoneToMove.transform.position - transform.position).normalized * speed;
 }
-

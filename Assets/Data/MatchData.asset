@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dff9cb8e218c8224e80a31fdc4b345f8, type: 3}
+  m_Name: MatchData
+  m_EditorClassIdentifier: 
+  homeMenuScene: HomeMenu
+  matchScene: Match
+  posibleBirdsColors:
+  - {r: 1, g: 0, b: 0, a: 1}
+  - {r: 0, g: 0.20355773, b: 1, a: 1}
+  - {r: 0.30506635, g: 1, b: 0, a: 1}
+  - {r: 0.9335182, g: 1, b: 0, a: 1}
+  playersDatas:
+  - {fileID: 11400000, guid: ec0f7bd3100884847a61ff394363c55c, type: 2}
+  playerPrefab: {fileID: 2312833011230508930, guid: 2a0d6578eee77e84ea43a613e4d964fa, type: 3}
+  birdsPrefabs:
+  - {fileID: 8592884961430522312, guid: ca3a527d3de699d488ef054e752f396e, type: 3}
+  totalPointsLimit: 0
+  totalPlayerPointsLimit: 0
+  timeLeft: 0
+  numberBirdsInScene: 0
+  timeToGenerateBird: 0
+  maxNumberOfBirds: 0
+  mixer: {fileID: 0}
+  masterVolume:
+    value: 1
+  musicVolume:
+    value: 1
+  soundEffectsVolume:
+    value: 1
+  interfaceVolume:
+    value: 1
+  volumeMultiplier: 0
+  actualMusicToPlay: []
+  winnerData:
+    value: {fileID: 0}
