@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public abstract class BranchFinder
@@ -12,7 +14,22 @@ public abstract class BranchFinder
         this.branchMask = branchMask;
     }
 
+    public static BranchFinder GenerateFinder(int distanceToFind, LayerMask branchMask, FindBranchType findBranch)
+    {
+        switch (findBranch)
+        {
+            case FindBranchType.InFront:
+                return new InFrontBranchFinder(distanceToFind,branchMask);
+            case FindBranchType.Closest:
+                return new ClosestBranchFinder(distanceToFind, branchMask);
+            default:
+                return null;
+        }
+    }
+
     public abstract Branch TryFindBranch(Transform birdTransform);
+
+
 
 }
 
@@ -51,4 +68,10 @@ public class InFrontBranchFinder: BranchFinder
             ? Physics2D.OverlapCircle(hit.point, 0.1f, branchMask).GetComponent<Branch>()
             : null;
     }
+}
+
+public enum FindBranchType
+{
+    InFront,
+    Closest
 }

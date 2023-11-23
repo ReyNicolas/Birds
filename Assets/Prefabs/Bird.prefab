@@ -207,10 +207,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spriteRenderer: {fileID: 1241425082552738667}
-  branchMask:
-    serializedVersion: 2
-    m_Bits: 64
-  distanceToFind: 10
-  speed: 1
   rb: {fileID: 8219880699707748695}
   zoneToMove: {fileID: 0}
+  birdData: {fileID: 11400000, guid: ea79449e2928f5042b65f7b40068553f, type: 2}

@@ -22,3 +22,4 @@ public class PlayerSO : ScriptableObject
         PointsToAdd = new ReactiveProperty<int>(0);
     }
 }
+

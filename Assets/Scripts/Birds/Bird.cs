@@ -3,24 +3,22 @@ using UnityEngine;
 public class Bird : MonoBehaviour
 {
     [SerializeField] SpriteRenderer spriteRenderer; 
-    [SerializeField] LayerMask branchMask;
-    [SerializeField] int distanceToFind;
-    [SerializeField] int speed;
     [SerializeField] Rigidbody2D rb;
     [SerializeField] Zone zoneToMove;
+    [SerializeField] BirdSO birdData;
+    int speed;
     BranchFinder branchFinder;
     bool inZone;
-    float angryTime = 2;
     float angryTimer;
     Transform angryTransform;
-    float followTime = 4;
     float followTimer;
     Transform followTransform;
 
 
     private void Awake()
     {
-        branchFinder = new ClosestBranchFinder(distanceToFind,branchMask); // new InFrontBranchFinder(distanceToFind,branchMask);
+        branchFinder = BranchFinder.GenerateFinder(birdData.DistanceToFind,birdData.BranchMask,birdData.FindBranch); // new InFrontBranchFinder(distanceToFind,branchMask);
+        speed = birdData.Speed;
     }
     void Update()
     {
@@ -75,7 +73,7 @@ public class Bird : MonoBehaviour
         if (collision.TryGetComponent<AngryObject>(out AngryObject angryObject))
         {
             angryTransform = angryObject.transform;
-            angryTimer = angryTime;
+            angryTimer = birdData.AngryTime;
         }
     }
      void ToFollowObjectNear(Collider2D collision)
@@ -83,7 +81,7 @@ public class Bird : MonoBehaviour
         if (collision.TryGetComponent<FollowObject>(out FollowObject followObject))
         {
             followTransform = followObject.transform;
-            followTimer = followTime;
+            followTimer = birdData.FollowTime;
         }
     }
 
@@ -136,14 +134,13 @@ public class Bird : MonoBehaviour
             followTransform = null;
         }
     }
-
     void TryFindZoneFromABranch() 
         => zoneToMove
             = branchFinder
             .TryFindBranch(transform)
             ?.TryGiveMeCloseZone(transform.position);
-
-
     void MoveToZone() 
         => rb.velocity = (zoneToMove.transform.position - transform.position).normalized * speed;
 }
+
+
