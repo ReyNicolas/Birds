@@ -12,7 +12,6 @@ public class Bird : MonoBehaviour
     float stateTimer;
     Transform stateTransform;
 
-
     private void Awake()
     {
         branchFinder = BranchFinder.GenerateFinder(birdData.DistanceToFind,birdData.BranchMask,birdData.FindBranch); // new InFrontBranchFinder(distanceToFind,branchMask);
@@ -51,7 +50,7 @@ public class Bird : MonoBehaviour
         }
 
     }
-    private void OnTriggerEnter2D(Collider2D collision)
+    protected virtual void OnTriggerEnter2D(Collider2D collision)
     {
         ArrivedObjetiveZone(collision);
 
@@ -62,7 +61,7 @@ public class Bird : MonoBehaviour
     {
         if (collision.TryGetComponent<Zone>(out Zone zone) && zone == zoneToMove)
         {
-            if(zone.myBird != null)
+            if(zone.myBird !=null)
             {
                 myState = BirdState.InAir;
                 return;
@@ -103,8 +102,10 @@ public class Bird : MonoBehaviour
     {
         if (collision.TryGetComponent<Zone>(out Zone zone) && zone == zoneToMove)
         {
-            rb.gravityScale = 1;
+            rb.gravityScale = 0.1f;
             zoneToMove = null;
+            if (myState == BirdState.InZone) 
+                myState = BirdState.InAir;
         }
     }
 
@@ -168,7 +169,6 @@ public class Bird : MonoBehaviour
     void MoveToStateTransform() 
         => rb.velocity = (stateTransform.position - transform.position).normalized * speed;
 }
-
 
 public enum BirdState
 {

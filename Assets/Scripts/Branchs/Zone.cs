@@ -5,11 +5,13 @@ public class Zone: MonoBehaviour
 {
     public Bird myBird = null;
     public event Action<Bird> OnBirdEnter;
+    [SerializeField] SpriteRenderer spriteRenderer;
 
 
     public void SetMyBird(Bird aBird)
     {
         myBird = aBird;
+        spriteRenderer.color = myBird.GetColor();
         OnBirdEnter?.Invoke(myBird);
     }
 
@@ -18,6 +20,7 @@ public class Zone: MonoBehaviour
         if(collision.TryGetComponent<Bird>(out Bird bird) && myBird == bird)
         {
             myBird = null;
+            spriteRenderer.color = Color.white;
         }
     }
 }

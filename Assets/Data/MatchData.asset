@@ -24,6 +24,7 @@ MonoBehaviour:
   playerPrefab: {fileID: 2312833011230508930, guid: 2a0d6578eee77e84ea43a613e4d964fa, type: 3}
   birdsPrefabs:
   - {fileID: 8592884961430522312, guid: ca3a527d3de699d488ef054e752f396e, type: 3}
+  - {fileID: 8592884961430522312, guid: acbad451ffe04694cb197dd1a96eb9c2, type: 3}
   totalPointsLimit: 0
   totalPlayerPointsLimit: 0
   timeLeft: 0
