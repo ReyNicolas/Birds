@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -12,14 +11,29 @@ public class GameManger : MonoBehaviour
         positionGenerator = new PositionGenerator();
         positionGenerator.SetDimension();
         birdGenerator = new BirdGenerator(matchData.birdsPrefabs, matchData.posibleBirdsColors, positionGenerator);
+
+        for (int i = 0; i < matchData.playersDatas.Count; i++)
+        {
+            matchData.playersDatas[i].PlayerColor = matchData.posibleBirdsColors[i];
+        }
+
+        matchData.Initialize();
+        Branch.OnPointsToColor += GivePointsToPlayer;
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.O))
+        if (Input.GetKeyDown(KeyCode.O))// to test
         {
             birdGenerator.GenerateBird();
         }
+    }
+
+    void GivePointsToPlayer(int points, Color color)
+    {
+        var playerDataToAddPoints = matchData.playersDatas.Find(pd => pd.PlayerColor == color);
+        if (playerDataToAddPoints != null)
+            playerDataToAddPoints.PointsToAdd.Value += points;
     }
 
 }

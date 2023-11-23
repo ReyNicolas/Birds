@@ -33,7 +33,10 @@ public class Branch : MonoBehaviour
         if (ThereAreEmptyZones())
             return;
         if (AllZoneBirdsAreTheSameColor())
+        {
             OnPointsToColor?.Invoke(GetDistinctsBirdsInZoneCount(), GetFirstZoneBirdColor());
+            zones.Distinct().ToList().ForEach(zone => Destroy(zone.myBird.gameObject));
+        }
     }
 
     Color GetFirstZoneBirdColor() 

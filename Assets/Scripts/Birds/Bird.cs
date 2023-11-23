@@ -11,11 +11,6 @@ public class Bird : MonoBehaviour
     BranchFinder branchFinder;
     float stateTimer;
     Transform stateTransform;
-   // bool inZone;
-    //float angryTimer;
-    //Transform angryTransform;
-    //float followTimer;
-    //Transform followTransform;
 
 
     private void Awake()
@@ -42,26 +37,7 @@ public class Bird : MonoBehaviour
                 break;
         }
 
-        //if (angryTransform != null)
-        //{
-        //    EscapeFromObject();
-        //    return;
-        //}
-        //if (followTransform != null)
-        //{
-        //    FollowObject();
-        //    return;
-        //}
-
-        //if (inZone) return;
-
-        //TryFindZoneFromABranch();
-
-        //if (zoneToMove != null)
-        //    MoveToZone();
     }
-
-
     private void LateUpdate()
     {
         transform.up = rb.velocity;
@@ -86,6 +62,13 @@ public class Bird : MonoBehaviour
     {
         if (collision.TryGetComponent<Zone>(out Zone zone) && zone == zoneToMove)
         {
+            if(zone.myBird != null)
+            {
+                myState = BirdState.InAir;
+                return;
+            }
+
+            zone.SetMyBird(this);
             rb.velocity = Vector3.zero;
             rb.gravityScale = 0;
             transform.SetPositionAndRotation(collision.transform.position, collision.transform.rotation);

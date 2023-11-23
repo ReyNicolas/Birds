@@ -4,11 +4,25 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    [SerializeField] PlayerSO playerData;
+    [SerializeField] SpriteRenderer spriteRenderer;
     [SerializeField] List<GameObject> objectsPrefabs;
     [SerializeField] int force;
     [SerializeField] int speed;
     [SerializeField]Vector2 aimDirection;
     [SerializeField]Vector2 moveDirection;
+
+    private void Awake()
+    {
+        Initialize(playerData); // just to test GameManger should initialize
+       
+    }
+
+    public void Initialize(PlayerSO playerData)
+    {
+        this.playerData = playerData;
+        spriteRenderer.color = playerData.PlayerColor;
+    }
 
     private void Update()
     {
