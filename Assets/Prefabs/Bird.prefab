@@ -96,7 +96,7 @@ GameObject:
   - component: {fileID: 1582878809771379227}
   - component: {fileID: 8219880699707748695}
   - component: {fileID: 8986427596901985070}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Bird
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -182,7 +182,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0.1
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -210,3 +210,4 @@ MonoBehaviour:
   rb: {fileID: 8219880699707748695}
   zoneToMove: {fileID: 0}
   birdData: {fileID: 11400000, guid: ea79449e2928f5042b65f7b40068553f, type: 2}
+  myState: 0

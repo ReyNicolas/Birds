@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a1f3ec1fd960f6d4b983c1a3279afbd2, type: 3}
   m_Name: BirdData
   m_EditorClassIdentifier: 
-  AngryTime: 0
-  FollowTime: 0
-  DistanceToFind: 0
-  Speed: 0
+  AngryTime: 2
+  FollowTime: 4
+  DistanceToFind: 10
+  Speed: 1
   BranchMask:
     serializedVersion: 2
-    m_Bits: 0
-  FindBranch: 0
+    m_Bits: 64
+  FindBranch: 1

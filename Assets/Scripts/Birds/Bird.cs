@@ -6,39 +6,59 @@ public class Bird : MonoBehaviour
     [SerializeField] Rigidbody2D rb;
     [SerializeField] Zone zoneToMove;
     [SerializeField] BirdSO birdData;
+    [SerializeField]BirdState myState;
     int speed;
     BranchFinder branchFinder;
-    bool inZone;
-    float angryTimer;
-    Transform angryTransform;
-    float followTimer;
-    Transform followTransform;
+    float stateTimer;
+    Transform stateTransform;
+   // bool inZone;
+    //float angryTimer;
+    //Transform angryTransform;
+    //float followTimer;
+    //Transform followTransform;
 
 
     private void Awake()
     {
         branchFinder = BranchFinder.GenerateFinder(birdData.DistanceToFind,birdData.BranchMask,birdData.FindBranch); // new InFrontBranchFinder(distanceToFind,branchMask);
         speed = birdData.Speed;
+        myState = BirdState.InAir;
     }
     void Update()
     {
-        if (angryTransform != null)
+        switch (myState)
         {
-            EscapeFromObject();
-            return;
+            case BirdState.Angry:
+                EscapeFromObject();
+                break;
+            case BirdState.Following:
+                FollowObject();
+                break;
+            case BirdState.InAir:
+                TryFindZoneFromABranch();
+                break;
+            case BirdState.MovingToZone:
+                MoveToStateTransform();
+                break;
         }
-        if (followTransform != null)
-        {
-            FollowObject();
-            return;
-        }
 
-        if (inZone) return;
+        //if (angryTransform != null)
+        //{
+        //    EscapeFromObject();
+        //    return;
+        //}
+        //if (followTransform != null)
+        //{
+        //    FollowObject();
+        //    return;
+        //}
 
-        TryFindZoneFromABranch();
+        //if (inZone) return;
 
-        if (zoneToMove != null)
-            MoveToZone();
+        //TryFindZoneFromABranch();
+
+        //if (zoneToMove != null)
+        //    MoveToZone();
     }
 
 
@@ -62,26 +82,46 @@ public class Bird : MonoBehaviour
         AngryObjectNear(collision);
         ToFollowObjectNear(collision);
     }
-
-
-    private void OnTriggerExit2D(Collider2D collision)
+    void ArrivedObjetiveZone(Collider2D collision)
     {
-        ExitArrivedZone(collision);
+        if (collision.TryGetComponent<Zone>(out Zone zone) && zone == zoneToMove)
+        {
+            rb.velocity = Vector3.zero;
+            rb.gravityScale = 0;
+            transform.SetPositionAndRotation(collision.transform.position, collision.transform.rotation);
+            myState = BirdState.InZone;
+        }
     }
      void AngryObjectNear(Collider2D collision)
     {
         if (collision.TryGetComponent<AngryObject>(out AngryObject angryObject))
         {
-            angryTransform = angryObject.transform;
-            angryTimer = birdData.AngryTime;
+            stateTransform = angryObject.transform;
+            stateTimer = birdData.AngryTime;
+            myState = BirdState.Angry;
         }
     }
      void ToFollowObjectNear(Collider2D collision)
     {
         if (collision.TryGetComponent<FollowObject>(out FollowObject followObject))
         {
-            followTransform = followObject.transform;
-            followTimer = birdData.FollowTime;
+            stateTransform = followObject.transform;
+            stateTimer = birdData.FollowTime;
+            myState = BirdState.Following;
+        }
+    }
+
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        ExitArrivedZone(collision);
+    }
+    void ExitArrivedZone(Collider2D collision)
+    {
+        if (collision.TryGetComponent<Zone>(out Zone zone) && zone == zoneToMove)
+        {
+            rb.gravityScale = 1;
+            zoneToMove = null;
         }
     }
 
@@ -95,52 +135,63 @@ public class Bird : MonoBehaviour
         return spriteRenderer.color;
     }
 
-    void ArrivedObjetiveZone(Collider2D collision)
-    {
-        if (collision.TryGetComponent<Zone>(out Zone zone) && zone == zoneToMove)
-        {
-            rb.velocity = Vector3.zero;
-            rb.gravityScale = 0;
-            transform.SetPositionAndRotation(collision.transform.position, collision.transform.rotation);
-            inZone = true;
-        }
-    }
-    void ExitArrivedZone(Collider2D collision)
-    {
-        if (collision.TryGetComponent<Zone>(out Zone zone) && zone == zoneToMove)
-        {
-            rb.gravityScale = 1;
-            inZone = false;
-            zoneToMove = null;
-        }
-    }
     void EscapeFromObject()
     {
-        angryTimer -= Time.deltaTime;
-
-        rb.velocity = (transform.position - angryTransform.position).normalized * speed;
-        if (angryTimer <= 0)
-        {
-            angryTransform = null;
-        }
+        if (!CheckIfStateTransformExist())
+            return;
+        EscapeFromStateTransform();
+        TryEndStateWithTimer();
     }
+
     void FollowObject()
     {
-        followTimer -= Time.deltaTime;
-
-        rb.velocity = (followTransform.position - transform.position).normalized * speed;
-        if (followTimer <= 0)
-        {
-            followTransform = null;
-        }
+        if (!CheckIfStateTransformExist())
+            return;
+        MoveToStateTransform();
+        TryEndStateWithTimer();
     }
-    void TryFindZoneFromABranch() 
-        => zoneToMove
+
+    bool CheckIfStateTransformExist()
+    {
+        if (stateTransform != null)
+            return true;
+
+        myState = BirdState.InAir;
+        return false;
+    }
+    void TryFindZoneFromABranch()
+    {
+        zoneToMove
             = branchFinder
             .TryFindBranch(transform)
             ?.TryGiveMeCloseZone(transform.position);
-    void MoveToZone() 
-        => rb.velocity = (zoneToMove.transform.position - transform.position).normalized * speed;
+        if (zoneToMove != null)
+        {
+            myState = BirdState.Following;
+            stateTransform = zoneToMove.transform;
+        }
+    }         
+    void TryEndStateWithTimer()
+    {
+        stateTimer -= Time.deltaTime;
+        if (stateTimer <= 0)
+        {
+            stateTransform = null;
+            myState = BirdState.InAir;
+        }
+    }
+    void EscapeFromStateTransform()
+        => rb.velocity = (transform.position - stateTransform.position).normalized * speed;
+    void MoveToStateTransform() 
+        => rb.velocity = (stateTransform.position - transform.position).normalized * speed;
 }
 
 
+public enum BirdState
+{
+    InZone,
+    InAir,
+    MovingToZone,
+    Angry,
+    Following
+}
