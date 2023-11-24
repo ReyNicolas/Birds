@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2328443625949062809}
   - component: {fileID: 4714868632818873651}
   - component: {fileID: 5299863151928151378}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Zone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -103,7 +103,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1653914745593293944}
   - component: {fileID: 8623222451417109617}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -28,6 +28,16 @@ public class Branch : MonoBehaviour
                 .First() 
             : null;
     }
+    public Zone TryGiveMeCloseZoneFreeOrWithNormalBird(Vector2 point)
+    {
+        var freeZones = zones.Where(z => z.myBird == null || (z.myBird !=null && !z.myBird.GetComponent<FatBird>()));
+
+        return (freeZones.Count() > 0)
+            ? freeZones
+                .OrderBy(z => Vector2.Distance(z.transform.position, point))
+                .First()
+            : null;
+    }
     void CheckAllBirdsInBranchSameColor()
     {
         if (ThereAreEmptyZones())
@@ -35,7 +45,7 @@ public class Branch : MonoBehaviour
         if (AllZoneBirdsAreTheSameColor())
         {
             OnPointsToColor?.Invoke(GetDistinctsBirdsInZoneCount(), GetFirstZoneBirdColor());
-            zones.Distinct().ToList().ForEach(zone => Destroy(zone.myBird.gameObject));
+            zones.Select(zone=>zone.myBird).Distinct().ToList().ForEach(zone => Destroy(zone.gameObject));
         }
     }
 

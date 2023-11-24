@@ -8,4 +8,18 @@ public class FatBird: Bird
         if (collision.TryGetComponent<Zone>(out Zone zone))
             zone.SetMyBird(this);
     }
+
+    protected override void TryFindZoneFromABranch()
+    {
+        zoneToMove
+            = branchFinder
+            .TryFindBranch(transform)
+            ?.TryGiveMeCloseZoneFreeOrWithNormalBird(transform.position);
+        if (zoneToMove != null)
+        {
+            myState = BirdState.Following;
+            stateTransform = zoneToMove.transform;
+        }
+    }
+    
 }

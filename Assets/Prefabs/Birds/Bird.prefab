@@ -25,14 +25,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3654921850751992758}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: 0.7071068, w: -0.7071068}
-  m_LocalPosition: {x: 0.14, y: 0.125, z: -0.039301533}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: -0.25, y: 0.25, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3300209098304547874}
   m_Father: {fileID: 7552684707803838084}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 270}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1241425082552738667
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -110,7 +110,7 @@ Transform:
   m_GameObject: {fileID: 4044299436465207857}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -0.114, y: 0.098, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -210,7 +210,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 847916834680896052}
-  - component: {fileID: 1582878809771379227}
+  - component: {fileID: 1793455782519648975}
   - component: {fileID: 8219880699707748695}
   - component: {fileID: 8986427596901985070}
   - component: {fileID: 4617190298720735023}
@@ -237,8 +237,8 @@ Transform:
   - {fileID: 7552684707803838084}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!60 &1582878809771379227
-PolygonCollider2D:
+--- !u!70 &1793455782519648975
+CapsuleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -269,22 +269,9 @@ PolygonCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.4, y: 1.01}
-    newSize: {x: 1.4, y: 1.01}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  m_Points:
-    m_Paths:
-    - - {x: 0, y: 0.34}
-      - {x: -0.2, y: -0.17}
-      - {x: 0.2, y: -0.17}
-  m_UseDelaunayMesh: 0
+  m_Offset: {x: -0.053802803, y: 0.086860135}
+  m_Size: {x: 0.24551567, y: 0.27884045}
+  m_Direction: 0
 --- !u!50 &8219880699707748695
 Rigidbody2D:
   serializedVersion: 4

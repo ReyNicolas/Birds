@@ -5,15 +5,14 @@ public class Bird : MonoBehaviour
     [SerializeField] SpriteRenderer spriteRenderer;
     [SerializeField] Transform bodyTransform;
     [SerializeField] Rigidbody2D rb;
-    [SerializeField] Zone zoneToMove;
+    [SerializeField] protected Zone zoneToMove;
     [SerializeField] BirdSO birdData;
     [SerializeField] Animator animator;
-    [SerializeField]BirdState myState;
-    bool fliped;
+    [SerializeField] protected BirdState myState;
     int speed;
-    BranchFinder branchFinder;
+    protected BranchFinder branchFinder;
     float stateTimer;
-    Transform stateTransform;
+    protected Transform stateTransform;
 
     private void Awake()
     {
@@ -43,17 +42,12 @@ public class Bird : MonoBehaviour
     }
     private void LateUpdate()
     {
-        transform.up = rb.velocity;
-        if (rb.velocity.x > 0 && !fliped)
-        {
-            bodyTransform.transform.localScale =  (-Vector3.right + Vector3.up);
-            fliped = true;
-        }else if (rb.velocity.x < 0 && fliped)
-        {
-            bodyTransform.transform.localScale = Vector3.one;
-            fliped = false;
-        }
-            
+        transform.right = rb.velocity;
+        bodyTransform.localScale 
+            = (transform.up.y >= 0)
+                ? Vector2.up + Vector2.right 
+                : -Vector2.up +Vector2.right;
+
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -157,7 +151,7 @@ public class Bird : MonoBehaviour
         myState = BirdState.InAir;
         return false;
     }
-    void TryFindZoneFromABranch()
+    protected virtual void TryFindZoneFromABranch()
     {
         zoneToMove
             = branchFinder
