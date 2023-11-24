@@ -4,6 +4,7 @@ using UnityEngine;
 public class GameManger : MonoBehaviour
 {
     [SerializeField]MatchSO matchData;
+    [SerializeField]List<UIPlayerPanel> playerPanels;
     BirdGenerator birdGenerator;
     PositionGenerator positionGenerator;
     private void Awake()
@@ -14,9 +15,12 @@ public class GameManger : MonoBehaviour
 
         for (int i = 0; i < matchData.playersDatas.Count; i++)
         {
-            matchData.playersDatas[i].PlayerColor = matchData.posibleBirdsColors[i];
+            var playerData = matchData.playersDatas[i];
+            playerData.PlayerColor = matchData.posibleBirdsColors[i];
+            playerPanels[i].Initiaze(playerData);
         }
 
+        
         matchData.Initialize();
         Branch.OnPointsToColor += GivePointsToPlayer;
     }

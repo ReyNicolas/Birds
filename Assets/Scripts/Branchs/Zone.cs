@@ -20,6 +20,9 @@ public class Zone: MonoBehaviour
         if(collision.TryGetComponent<Bird>(out Bird bird) && myBird == bird)
         {
             myBird = null;
+        }
+        if(myBird == null)
+        {
             spriteRenderer.color = Color.white;
         }
     }

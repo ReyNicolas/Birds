@@ -15,10 +15,10 @@ MonoBehaviour:
   homeMenuScene: HomeMenu
   matchScene: Match
   posibleBirdsColors:
-  - {r: 1, g: 0, b: 0, a: 1}
-  - {r: 0, g: 0.20355773, b: 1, a: 1}
-  - {r: 0.30506635, g: 1, b: 0, a: 1}
-  - {r: 0.9335182, g: 1, b: 0, a: 1}
+  - {r: 0.7924528, g: 0.4684941, b: 0.4684941, a: 1}
+  - {r: 0.47466475, g: 0.754717, b: 0.47603306, a: 1}
+  - {r: 0.5238519, g: 0.73866487, b: 0.764151, a: 1}
+  - {r: 0.764151, g: 0.502225, b: 0.72066355, a: 1}
   playersDatas:
   - {fileID: 11400000, guid: ec0f7bd3100884847a61ff394363c55c, type: 2}
   playerPrefab: {fileID: 2312833011230508930, guid: 2a0d6578eee77e84ea43a613e4d964fa, type: 3}

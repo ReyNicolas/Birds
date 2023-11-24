@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a1f3ec1fd960f6d4b983c1a3279afbd2, type: 3}
   m_Name: BirdData
   m_EditorClassIdentifier: 
-  AngryTime: 2
+  AngryTime: 4
   FollowTime: 4
   DistanceToFind: 10
   Speed: 1
