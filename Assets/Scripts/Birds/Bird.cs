@@ -2,11 +2,14 @@ using UnityEngine;
 
 public class Bird : MonoBehaviour
 {
-    [SerializeField] SpriteRenderer spriteRenderer; 
+    [SerializeField] SpriteRenderer spriteRenderer;
+    [SerializeField] Transform bodyTransform;
     [SerializeField] Rigidbody2D rb;
     [SerializeField] Zone zoneToMove;
     [SerializeField] BirdSO birdData;
+    [SerializeField] Animator animator;
     [SerializeField]BirdState myState;
+    bool fliped;
     int speed;
     BranchFinder branchFinder;
     float stateTimer;
@@ -36,10 +39,21 @@ public class Bird : MonoBehaviour
                 break;
         }
 
+        animator.SetFloat("Speed", rb.velocity.sqrMagnitude);
     }
     private void LateUpdate()
     {
         transform.up = rb.velocity;
+        if (rb.velocity.x > 0 && !fliped)
+        {
+            bodyTransform.transform.localScale =  (-Vector3.right + Vector3.up);
+            fliped = true;
+        }else if (rb.velocity.x < 0 && fliped)
+        {
+            bodyTransform.transform.localScale = Vector3.one;
+            fliped = false;
+        }
+            
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
