@@ -38,7 +38,7 @@ MonoBehaviour:
   numberBirdsInScene: 0
   timeToGenerateBird: 0
   maxNumberOfBirds: 0
-  mixer: {fileID: 0}
+  mixer: {fileID: 24100000, guid: bebf3698097e7774aab67d208a6734c2, type: 2}
   masterVolume:
     value: 1
   musicVolume:
@@ -47,7 +47,7 @@ MonoBehaviour:
     value: 1
   interfaceVolume:
     value: 1
-  volumeMultiplier: 0
+  volumeMultiplier: 10
   actualMusicToPlay: []
   winnerData:
     value: {fileID: 0}
