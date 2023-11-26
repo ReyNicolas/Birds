@@ -25,6 +25,7 @@ MonoBehaviour:
   - {fileID: 5967631651630109889, guid: e6dce12bcf0200847914c2810f74f8cf, type: 3}
   - {fileID: 5967631651630109889, guid: ce12439759069624cbc79f635a497ab3, type: 3}
   - {fileID: 5967631651630109889, guid: 019284d13a5e8fe4aa34fad42cc51a51, type: 3}
+  - {fileID: 5967631651630109889, guid: 24f09a61983100b4d9028c4cf3153e53, type: 3}
   percentMarginRespawn: 0.2
   birdsPrefabs:
   - {fileID: 8592884961430522312, guid: ca3a527d3de699d488ef054e752f396e, type: 3}

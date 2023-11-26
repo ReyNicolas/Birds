@@ -17,7 +17,18 @@ public class Branch : MonoBehaviour
     private void OnDisable()
     {
         zones.ForEach(zone => zone.OnBirdEnter -= (_ => CheckAllBirdsInBranchSameColor()));
-    }    
+    }  
+    
+    public List<Bird> GetBirdsInBranch()
+    {
+        return 
+            zones
+                .Select(zone=> zone.myBird)
+                .Where(bird=> bird != null)
+                .Distinct()
+                .ToList();
+    }
+
     public Zone TryGiveMeCloseZone(Vector2 point)
     {
         var freeZones = zones.Where(z => z.myBird == null);

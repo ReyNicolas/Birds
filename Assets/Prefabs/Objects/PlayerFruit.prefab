@@ -161,7 +161,7 @@ MonoBehaviour:
   birdMask:
     serializedVersion: 2
     m_Bits: 128
-  radius: 3
+  radius: 2
   color: {r: 0, g: 0, b: 0, a: 0}
   spriteRenderer: {fileID: 8195880504072027195}
   rb: {fileID: 2587623501302898063}

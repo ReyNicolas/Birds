@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2816178257420287294}
   - component: {fileID: 681686144626386012}
   - component: {fileID: 7630837101112686748}
+  - component: {fileID: 1125899480576088530}
   m_Layer: 8
   m_Name: BirdKillerPower
   m_TagString: Untagged
@@ -81,6 +82,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6640fb33508a7084783b93173d627ffe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1125899480576088530
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5967631651630109889}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a9335a40b89c8d4abb617e88176734d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxRate: 0.1
+  ratePerSecond: 0.2
 --- !u!1 &6719864888404510744
 GameObject:
   m_ObjectHideFlags: 0
