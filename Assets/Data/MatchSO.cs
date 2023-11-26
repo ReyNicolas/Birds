@@ -8,21 +8,30 @@ using UnityEngine.Audio;
 [CreateAssetMenu(fileName = "MatchData", menuName = "Match Data")]
 public class MatchSO : ScriptableObject
 {
-    [Header("Data")]
+    [Header("Scenes Settings")]
     public string homeMenuScene;
     public string matchScene;
-    public List<Color> posibleBirdsColors = new List<Color>();
+
+    [Header("Players Settings")]
     public List<PlayerSO> playersDatas;
     public GameObject playerPrefab;
-    public List<GameObject> birdsPrefabs = new List<GameObject>() ;
+
     [Header("End conditions Settings")]
     public int totalPointsLimit;
     public int totalPlayerPointsLimit;
     public float timeLeft;
+
+    [Header("Powers Settings")]
+    public List<GameObject> powersPrefabs = new List<GameObject>();
+    public float percentMarginRespawn;
+
     [Header("Birds Settings")]
+    public List<GameObject> birdsPrefabs = new List<GameObject>();
+    public List<Color> posibleBirdsColors = new List<Color>();
     public int numberBirdsInScene;
     public int timeToGenerateBird;
     public int maxNumberOfBirds;
+
     [Header("Sound Settings")]
     public AudioMixer mixer;
     public ReactiveProperty<float> masterVolume = new ReactiveProperty<float>(1);

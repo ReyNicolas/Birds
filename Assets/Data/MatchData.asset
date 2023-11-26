@@ -14,20 +14,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   homeMenuScene: HomeMenu
   matchScene: Match
+  playersDatas:
+  - {fileID: 11400000, guid: ec0f7bd3100884847a61ff394363c55c, type: 2}
+  playerPrefab: {fileID: 2312833011230508930, guid: 2a0d6578eee77e84ea43a613e4d964fa, type: 3}
+  totalPointsLimit: 0
+  totalPlayerPointsLimit: 0
+  timeLeft: 0
+  powersPrefabs:
+  - {fileID: 5967631651630109889, guid: fc530e6755562e646ae8435151fcec4a, type: 3}
+  - {fileID: 5967631651630109889, guid: e6dce12bcf0200847914c2810f74f8cf, type: 3}
+  - {fileID: 5967631651630109889, guid: ce12439759069624cbc79f635a497ab3, type: 3}
+  - {fileID: 5967631651630109889, guid: 019284d13a5e8fe4aa34fad42cc51a51, type: 3}
+  percentMarginRespawn: 0.2
+  birdsPrefabs:
+  - {fileID: 8592884961430522312, guid: ca3a527d3de699d488ef054e752f396e, type: 3}
+  - {fileID: 8592884961430522312, guid: beb7c7803c8c9684da43b76753e1c2f1, type: 3}
   posibleBirdsColors:
   - {r: 0.7924528, g: 0.4684941, b: 0.4684941, a: 1}
   - {r: 0.47466475, g: 0.754717, b: 0.47603306, a: 1}
   - {r: 0.5238519, g: 0.73866487, b: 0.764151, a: 1}
   - {r: 0.764151, g: 0.502225, b: 0.72066355, a: 1}
-  playersDatas:
-  - {fileID: 11400000, guid: ec0f7bd3100884847a61ff394363c55c, type: 2}
-  playerPrefab: {fileID: 2312833011230508930, guid: 2a0d6578eee77e84ea43a613e4d964fa, type: 3}
-  birdsPrefabs:
-  - {fileID: 8592884961430522312, guid: ca3a527d3de699d488ef054e752f396e, type: 3}
-  - {fileID: 8592884961430522312, guid: beb7c7803c8c9684da43b76753e1c2f1, type: 3}
-  totalPointsLimit: 0
-  totalPlayerPointsLimit: 0
-  timeLeft: 0
   numberBirdsInScene: 0
   timeToGenerateBird: 0
   maxNumberOfBirds: 0

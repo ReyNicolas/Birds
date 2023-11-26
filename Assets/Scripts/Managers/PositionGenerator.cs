@@ -22,6 +22,12 @@ public class PositionGenerator
         yMax = mainCamera.transform.position.y + cameraHeight / 2;
     }
 
+    public void SetDimension(float percentRateHeighMargin)
+    {
+        SetDimension();
+        margin = xMax*percentRateHeighMargin;
+    }
+
     public Vector2 ReturnABorderPosition()
     {
         var num = Random.Range(1, 5);

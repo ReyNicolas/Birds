@@ -6,24 +6,23 @@ public class GameManger : MonoBehaviour
     [SerializeField]MatchSO matchData;
     [SerializeField]List<UIPlayerPanel> playerPanels;
     BirdGenerator birdGenerator;
+    PowerGenerator powerGenerator;
     PositionGenerator positionGenerator;
+    PositionGenerator positionGeneratorWithPercentMargin;
     private void Awake()
     {
-        positionGenerator = new PositionGenerator();
-        positionGenerator.SetDimension();
-        birdGenerator = new BirdGenerator(matchData.birdsPrefabs, matchData.posibleBirdsColors, positionGenerator);
+        CreateBirdGenerator();
+        CreatePowerGenerator();
+        SetPlayers();
 
-        for (int i = 0; i < matchData.playersDatas.Count; i++)
-        {
-            var playerData = matchData.playersDatas[i];
-            playerData.PlayerColor = matchData.posibleBirdsColors[i];
-            playerPanels[i].Initiaze(playerData);
-        }
-
-        
         matchData.Initialize();
         Branch.OnPointsToColor += GivePointsToPlayer;
     }
+    private void OnDestroy()
+    {
+        Branch.OnPointsToColor -= GivePointsToPlayer;
+    }
+
 
     private void Update()
     {
@@ -31,6 +30,34 @@ public class GameManger : MonoBehaviour
         {
             birdGenerator.GenerateBird();
         }
+
+        if (Input.GetKeyDown(KeyCode.P))// to test
+        {
+            powerGenerator.GeneratePower();
+        }
+    }
+    void SetPlayers()
+    {
+        for (int i = 0; i < matchData.playersDatas.Count; i++)
+        {
+            var playerData = matchData.playersDatas[i];
+            playerData.PlayerColor = matchData.posibleBirdsColors[i];
+            playerPanels[i].Initiaze(playerData);
+        }
+    }
+
+    void CreatePowerGenerator()
+    {
+        positionGeneratorWithPercentMargin = new PositionGenerator();
+        positionGeneratorWithPercentMargin.SetDimension(matchData.percentMarginRespawn);
+        powerGenerator = new PowerGenerator(matchData, positionGeneratorWithPercentMargin);
+    }
+
+    void CreateBirdGenerator()
+    {
+        positionGenerator = new PositionGenerator();
+        positionGenerator.SetDimension();
+        birdGenerator = new BirdGenerator(matchData.birdsPrefabs, matchData.posibleBirdsColors, positionGenerator);
     }
 
     void GivePointsToPlayer(int points, Color color)
@@ -69,5 +96,27 @@ public class BirdGenerator
 
     Color GetRandomColor()
         => colors[Random.Range(0, colors.Count)];
+}
+
+public class PowerGenerator
+{
+    MatchSO matchData;
+    PositionGenerator positionGenerator;
+
+    public PowerGenerator(MatchSO matchData, PositionGenerator positionGenerator)
+    {
+        this.matchData = matchData;
+        this.positionGenerator = positionGenerator;
+    }
+
+    public GameObject GeneratePower()
+    {
+        var powerGO = GameObject.Instantiate(GetRandomPowerPrefab());
+        positionGenerator.AssignPosition(powerGO);
+        return powerGO;
+    }
+    GameObject GetRandomPowerPrefab()
+        => matchData.powersPrefabs[Random.Range(0, matchData.powersPrefabs.Count)];
+
 }
 
