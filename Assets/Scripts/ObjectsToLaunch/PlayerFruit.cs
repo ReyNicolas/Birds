@@ -29,6 +29,16 @@ public class PlayerFruit: MonoBehaviour
 
     }
 
+    public Color GetColor()
+    {
+        return color;
+    }
+
+    public void ChangeColor(Color colorToSet)
+    {
+        color = colorToSet;
+    }
+
     void ActInCloseBirds()
     {
         Physics2D
