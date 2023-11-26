@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class Bird : MonoBehaviour
 {
+    public static event Action<Bird> OnNewBird;
+    public static event Action<Bird> OnDestroyBird;
     [SerializeField] SpriteRenderer spriteRenderer;
     [SerializeField] Transform bodyTransform;
     [SerializeField] Rigidbody2D rb;
@@ -20,7 +22,14 @@ public class Bird : MonoBehaviour
         branchFinder = BranchFinder.GenerateFinder(birdData.DistanceToFind,birdData.BranchMask,birdData.FindBranch); // new InFrontBranchFinder(distanceToFind,branchMask);
         speed = birdData.Speed;
         myState = BirdState.InAir;
+        OnNewBird?.Invoke(this);
     }
+
+    private void OnDestroy()
+    {
+        OnDestroyBird?.Invoke(this);
+    }
+
     void Update()
     {
         switch (myState)
