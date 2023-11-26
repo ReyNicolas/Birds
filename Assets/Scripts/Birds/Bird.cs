@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class Bird : MonoBehaviour
@@ -14,7 +15,7 @@ public class Bird : MonoBehaviour
     float stateTimer;
     protected Transform stateTransform;
 
-    private void Awake()
+    protected virtual void Awake()
     {
         branchFinder = BranchFinder.GenerateFinder(birdData.DistanceToFind,birdData.BranchMask,birdData.FindBranch); // new InFrontBranchFinder(distanceToFind,branchMask);
         speed = birdData.Speed;
@@ -24,7 +25,7 @@ public class Bird : MonoBehaviour
     {
         switch (myState)
         {
-            case BirdState.Angry:
+            case BirdState.Escaping:
                 EscapeFromObject();
                 break;
             case BirdState.Following:
@@ -61,9 +62,6 @@ public class Bird : MonoBehaviour
     protected virtual void OnTriggerEnter2D(Collider2D collision)
     {
         ArrivedObjetiveZone(collision);
-
-        AngryObjectNear(collision);
-        ToFollowObjectNear(collision);
     }
     void ArrivedObjetiveZone(Collider2D collision)
     {
@@ -82,26 +80,7 @@ public class Bird : MonoBehaviour
             myState = BirdState.InZone;
         }
     }
-     void AngryObjectNear(Collider2D collision)
-    {
-        if (collision.TryGetComponent<AngryObject>(out AngryObject angryObject))
-        {
-            stateTransform = angryObject.transform;
-            stateTimer = birdData.AngryTime;
-            myState = BirdState.Angry;
-        }
-    }
-     void ToFollowObjectNear(Collider2D collision)
-    {
-        if (collision.TryGetComponent<FollowObject>(out FollowObject followObject))
-        {
-            stateTransform = followObject.transform;
-            stateTimer = birdData.FollowTime;
-            myState = BirdState.Following;
-        }
-    }
-
-
+ 
     private void OnTriggerExit2D(Collider2D collision)
     {
         ExitArrivedZone(collision);
@@ -125,6 +104,19 @@ public class Bird : MonoBehaviour
     public Color GetColor()
     {
         return spriteRenderer.color;
+    }
+
+    public void GetToFollowObject(Transform transformToFollow)
+    {
+        stateTransform = transformToFollow;
+        stateTimer = birdData.FollowTime;
+        myState = BirdState.Following;
+    }
+    public void GetToEscapeObject(Transform transformToEscape)
+    {
+        stateTransform = transformToEscape;
+        stateTimer = birdData.FollowTime;
+        myState = BirdState.Escaping;
     }
 
     void EscapeFromObject()
@@ -174,8 +166,10 @@ public class Bird : MonoBehaviour
     }
     void EscapeFromStateTransform()
         => rb.velocity = (transform.position - stateTransform.position).normalized * speed;
-    void MoveToStateTransform() 
+    protected virtual void MoveToStateTransform() 
         => rb.velocity = (stateTransform.position - transform.position).normalized * speed;
+
+    
 }
 
 public enum BirdState
@@ -183,6 +177,6 @@ public enum BirdState
     InZone,
     InAir,
     MovingToZone,
-    Angry,
+    Escaping,
     Following
 }

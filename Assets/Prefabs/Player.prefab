@@ -48,9 +48,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerData: {fileID: 11400000, guid: ec0f7bd3100884847a61ff394363c55c, type: 2}
   spriteRenderer: {fileID: 4818786148767231060}
-  objectsPrefabs:
-  - {fileID: 4866642461288084917, guid: ee7ffde27909f794e92cad26ff4fcd71, type: 3}
-  - {fileID: 4866642461288084917, guid: eb3fbb252d4086f4cb8207d23027dea2, type: 3}
+  fruitPrefab: {fileID: 4866642461288084917, guid: eb3fbb252d4086f4cb8207d23027dea2, type: 3}
   force: 3
   speed: 3
   aimTransform: {fileID: 9051854857079895434}

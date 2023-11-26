@@ -6,7 +6,7 @@ public class Player : MonoBehaviour
 {
     [SerializeField] PlayerSO playerData;
     [SerializeField] SpriteRenderer spriteRenderer;
-    [SerializeField] List<GameObject> objectsPrefabs;
+    [SerializeField] GameObject fruitPrefab;
     [SerializeField] int force;
     [SerializeField] int speed;
     [SerializeField] Transform aimTransform;
@@ -31,7 +31,7 @@ public class Player : MonoBehaviour
         if (Input.GetKeyUp(KeyCode.Space))
         {
             waitTimer = 0.3f;
-            ShootObject();
+            ShootFruit();
             return;
         }
         if (Input.GetKey(KeyCode.Space))
@@ -61,12 +61,10 @@ public class Player : MonoBehaviour
         aimTransform.up = aimDirection;
     }
 
-    void ShootObject() 
-        => Instantiate(GetRandomObjectPrefab(), transform.position, Quaternion.identity)
-                        .GetComponent<Rigidbody2D>().velocity = aimDirection * force;
+    void ShootFruit()
+        => Instantiate(fruitPrefab, transform.position, Quaternion.identity)
+                        .GetComponent<PlayerFruit>()
+                            .Initialize(playerData.PlayerColor, aimDirection * force);
+  
 
-    GameObject GetRandomObjectPrefab()
-    {
-        return objectsPrefabs[Random.Range(0, objectsPrefabs.Count)];
-    }
 }
