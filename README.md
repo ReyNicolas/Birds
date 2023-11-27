@@ -29,6 +29,6 @@ Follow these steps to run the game on your local machine:
 ## Details:
 
 Made in Unity.
--UniRx(Reactive Extensions for Unity).
--Unity's new Input System.
--Scriptable objects.
+* UniRx(Reactive Extensions for Unity).
+* Unity's new Input System.
+* Scriptable objects.
