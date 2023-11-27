@@ -17,8 +17,8 @@ MonoBehaviour:
   playersDatas:
   - {fileID: 11400000, guid: ec0f7bd3100884847a61ff394363c55c, type: 2}
   playerPrefab: {fileID: 2312833011230508930, guid: 2a0d6578eee77e84ea43a613e4d964fa, type: 3}
-  totalPointsLimit: 0
-  totalPlayerPointsLimit: 0
+  totalPointsLimit: 20
+  totalPlayerPointsLimit: 10
   timeLeft: 0
   powersPrefabs:
   - {fileID: 5967631651630109889, guid: fc530e6755562e646ae8435151fcec4a, type: 3}
@@ -40,14 +40,15 @@ MonoBehaviour:
   maxNumberOfBirds: 0
   mixer: {fileID: 24100000, guid: bebf3698097e7774aab67d208a6734c2, type: 2}
   masterVolume:
-    value: 1
+    value: 100
   musicVolume:
-    value: 1
+    value: 100
   soundEffectsVolume:
-    value: 1
+    value: 100
   interfaceVolume:
-    value: 1
-  volumeMultiplier: 10
-  actualMusicToPlay: []
+    value: 100
+  volumeMultiplier: 25
+  actualMusicToPlay:
+  - {fileID: 8300000, guid: 3f73c9f16a529794aba32a3e19205c6e, type: 3}
   winnerData:
     value: {fileID: 0}

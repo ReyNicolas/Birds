@@ -38,29 +38,21 @@ public class HomeMenuManager : MonoBehaviour
         for (int i = 0; i < gamepads; i++)
         {
             playersPanels[i].gameObject.SetActive(true);
-            playersPanels[i].SetName(false);            
+            playersPanels[i].SetMyPlayer(playersDatas[i]);            
         }
-        for (int i = gamepads; i < int.Parse(maxPlayers.text); i++)
-        {
-            playersPanels[i].gameObject.SetActive(true);
-            playersPanels[i].SetName(true);
-        }
-
-
     }
 
     public void StartMatch()
     {
-        if (Gamepad.all.Count == 0)
+        if (gamepads == 0)
         {
             errorMessage.text = "Add at least one gamepad";
             return;
         }
         var totalPlayers = int.Parse(maxPlayers.text);
 
-        //matchData.humansDatas = playersDatas.Take(Gamepad.all.Count).ToList();
-        matchData.playersDatas = playersDatas.Take(totalPlayers).ToList();
-       // matchData.botsDatas = matchData.playersDatas.Where(pd=> !matchData.humansDatas.Contains(pd)).ToList();
+       matchData.playersDatas = playersDatas.Take(gamepads).ToList();
+
         InputSystem.onDeviceChange -= OnDeviceChange;
         matchData.Initialize();
         SceneManager.LoadScene(matchData.matchScene);
