@@ -9,6 +9,7 @@ public class GameManger : MonoBehaviour
 {
     [SerializeField]MatchSO matchData;
     [SerializeField] GameObject optionsGO;
+    [SerializeField]List<Transform> spawnTransforms;
     [SerializeField]List<UIPlayerPanel> playerPanels;
 
     BirdGenerator birdGenerator;
@@ -105,7 +106,7 @@ public class GameManger : MonoBehaviour
             playerData.PlayerColor = matchData.posibleBirdsColors[i];
 
 
-            GameObject playerGO = Instantiate(matchData.playerPrefab);
+            GameObject playerGO = Instantiate(matchData.playerPrefab, spawnTransforms[i].position, Quaternion.identity);
             playerGO.GetComponent<Player>().Initialize(playerData);
 
             if(i < matchData.KeyboardPlayersCount) //First players take keyboards inputs
