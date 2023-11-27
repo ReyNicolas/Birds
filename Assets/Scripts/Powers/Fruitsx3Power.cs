@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Fruitsx3Power : MonoBehaviour
+public class Fruitsx3Power : Power
 {
     bool used;
     private void OnTriggerEnter2D(Collider2D collision)

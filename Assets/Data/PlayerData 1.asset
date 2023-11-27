@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: PlayerData 1
   m_EditorClassIdentifier: 
   playerSprite: {fileID: 0}
-  PlayerName: 
-  PlayerColor: {r: 0.7264151, g: 0.18274589, b: 0.18274589, a: 1}
+  PlayerName: Player 1
+  PlayerColor: {r: 0.7924528, g: 0.4684941, b: 0.4684941, a: 1}
   PlayerScore: 0
   PointsToAdd:
-    value: 13
+    value: 0

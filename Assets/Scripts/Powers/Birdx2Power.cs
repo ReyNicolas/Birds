@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Birdx2Power : MonoBehaviour
+public class Birdx2Power : Power
 {
     bool used;
     private void OnTriggerEnter2D(Collider2D collision)

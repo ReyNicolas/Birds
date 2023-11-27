@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class ScareBirdsInCloseBranchPower : MonoBehaviour
+public class ScareBirdsInCloseBranchPower : Power
 {
     bool used;
     [SerializeField] float radius; //TODO: change this logic with a singleton *1

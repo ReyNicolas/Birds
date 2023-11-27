@@ -25,6 +25,9 @@ public class MatchSO : ScriptableObject
     [Header("Powers Settings")]
     public List<GameObject> powersPrefabs = new List<GameObject>();
     public float percentMarginRespawn;
+    public int numberPowersInScene;
+    public int timeToGeneratePower;
+    public int maxNumberOfPowers;
 
     [Header("Birds Settings")]
     public List<GameObject> birdsPrefabs = new List<GameObject>();
@@ -69,6 +72,16 @@ public class MatchSO : ScriptableObject
         playersDatas.ForEach(playerData => playerData.Initialize());
         winnerData.Dispose();
         winnerData = new ReactiveProperty<PlayerSO>(null);
+    }
+
+    public bool NumberBirdsIsLessMax()
+    {
+        return numberBirdsInScene < maxNumberOfBirds;
+    }
+
+    public bool NumberPowersIsLessMax()
+    {
+        return numberPowersInScene < maxNumberOfPowers;
     }
 
     public void CheckWinner(int value)

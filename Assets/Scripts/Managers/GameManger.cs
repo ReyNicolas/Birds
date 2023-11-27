@@ -15,6 +15,8 @@ public class GameManger : MonoBehaviour
     PowerGenerator powerGenerator;
     PositionGenerator positionGenerator;
     PositionGenerator positionGeneratorWithPercentMargin;
+    float birdTimer;
+    float powerTimer;
 
     CompositeDisposable disposables;
 
@@ -25,7 +27,14 @@ public class GameManger : MonoBehaviour
         SetPlayers();
 
         matchData.Initialize();
+        
         Branch.OnPointsToColor += GivePointsToPlayer;
+
+        Bird.OnNewBird += (_=> matchData.numberBirdsInScene++);
+        Bird.OnDestroyBird += (_ => matchData.numberBirdsInScene--);
+
+        Power.OnNewPower += (_ => matchData.numberPowersInScene++);
+        Power.OnDestroyPower += (_ => matchData.numberPowersInScene--);
     }
     private void Start()
     {
@@ -40,15 +49,43 @@ public class GameManger : MonoBehaviour
                            playerData.PointsToAdd
                            .Subscribe(value => matchData.CheckWinner(value)))
             );
+
+        birdTimer = matchData.timeToGenerateBird;
+        powerTimer = matchData.timeToGeneratePower;
     }
 
     private void OnDestroy()
     {
         disposables.Dispose();
+
         Branch.OnPointsToColor -= GivePointsToPlayer;
+
+        Bird.OnNewBird -= (_ => matchData.numberBirdsInScene++);
+        Bird.OnDestroyBird -= (_ => matchData.numberBirdsInScene--);
+
+        Power.OnNewPower -= (_ => matchData.numberPowersInScene++);
+        Power.OnDestroyPower -= (_ => matchData.numberPowersInScene--);
     }
 
     private void Update()
+    {
+        birdTimer -= Time.deltaTime;
+        if(birdTimer <=0 && matchData.NumberBirdsIsLessMax())
+        {
+            birdTimer = matchData.timeToGenerateBird;
+            birdGenerator.GenerateBird();
+        }
+
+        powerTimer -= Time.deltaTime;
+        if (powerTimer <= 0 && matchData.NumberPowersIsLessMax())
+        {
+            powerTimer = matchData.timeToGeneratePower;
+            powerGenerator.GeneratePower();
+        }
+
+    }
+
+    private void LateUpdate()
     {
         if (Input.GetKeyDown(KeyCode.R))
         {
@@ -66,14 +103,12 @@ public class GameManger : MonoBehaviour
         {
             var playerData = matchData.playersDatas[i];
             playerData.PlayerColor = matchData.posibleBirdsColors[i];
-            playerPanels[i].Initiaze(playerData);
+
 
             GameObject playerGO = Instantiate(matchData.playerPrefab);
-            playerGO
-                .GetComponent<Player>()
-                .Initialize(playerData);
+            playerGO.GetComponent<Player>().Initialize(playerData);
 
-            if(i < matchData.KeyboardPlayersCount)
+            if(i < matchData.KeyboardPlayersCount) //First players take keyboards inputs
             {
                 SetKeyboardInput(i, playerGO.GetComponent<PlayerInput>());
             }
@@ -81,6 +116,8 @@ public class GameManger : MonoBehaviour
             {
                  SetGamepadInput(i - matchData.KeyboardPlayersCount, playerGO.GetComponent<PlayerInput>());
             }
+
+            playerPanels[i].Initiaze(playerData);
         }
     }
     void SetKeyboardInput(int index, PlayerInput playerInput)

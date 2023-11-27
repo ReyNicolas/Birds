@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using UnityEngine;
 
-public class BirdColorChangerPower : MonoBehaviour
+public class BirdColorChangerPower : Power
 {
     bool used;
     [SerializeField] float radius; //TODO: change this logic with a singleton *1
@@ -31,4 +31,21 @@ public class BirdColorChangerPower : MonoBehaviour
     }
 
     
+}
+
+
+public abstract class Power: MonoBehaviour
+{
+    public static event Action<Power> OnNewPower;
+    public static event Action<Power> OnDestroyPower;
+
+    protected virtual void Awake()
+    {
+        OnNewPower?.Invoke(this);
+    }
+
+    protected virtual void OnDestroy()
+    {
+        OnDestroyPower?.Invoke(this);
+    }
 }
