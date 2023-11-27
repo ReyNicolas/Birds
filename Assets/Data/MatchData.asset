@@ -12,11 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dff9cb8e218c8224e80a31fdc4b345f8, type: 3}
   m_Name: MatchData
   m_EditorClassIdentifier: 
-  homeMenuScene: HomeMenu
+  homeMenuScene: Home
   matchScene: Match
   playersDatas:
   - {fileID: 11400000, guid: ec0f7bd3100884847a61ff394363c55c, type: 2}
   playerPrefab: {fileID: 2312833011230508930, guid: 2a0d6578eee77e84ea43a613e4d964fa, type: 3}
+  KeyboardPlayersCount: 1
   totalPointsLimit: 20
   totalPlayerPointsLimit: 10
   timeLeft: 0

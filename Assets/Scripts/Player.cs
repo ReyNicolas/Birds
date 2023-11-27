@@ -1,6 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
@@ -12,6 +11,7 @@ public class Player : MonoBehaviour
     [SerializeField] Transform aimTransform;
     [SerializeField] Vector2 aimDirection;
     [SerializeField] Vector2 moveDirection;
+    [SerializeField] PlayerInput playerInput;
     float waitTimer;
 
     private void Awake()
@@ -28,13 +28,13 @@ public class Player : MonoBehaviour
     private void Update()
     {
         waitTimer -= Time.deltaTime;
-        if (Input.GetKeyUp(KeyCode.Space))
+        if (playerInput.actions["Aim"].WasReleasedThisFrame())
         {
             waitTimer = 0.3f;
             ShootFruit();
             return;
         }
-        if (Input.GetKey(KeyCode.Space))
+        if (playerInput.actions["Aim"].IsPressed())
         {
             Aim();
             return;
@@ -46,16 +46,14 @@ public class Player : MonoBehaviour
 
     void Move()
     {
-        moveDirection.x = Input.GetAxis("Horizontal");
-        moveDirection.y = Input.GetAxis("Vertical");
+        moveDirection = playerInput.actions["Move"].ReadValue<Vector2>();
         moveDirection = moveDirection.normalized;
         transform.Translate(moveDirection * speed * Time.deltaTime);
     }
 
     void Aim()
     {
-        aimDirection.x = Input.GetAxis("Horizontal");
-        aimDirection.y = Input.GetAxis("Vertical");
+        aimDirection = playerInput.actions["Move"].ReadValue<Vector2>();
         aimDirection = aimDirection.normalized;
         aimTransform.localPosition = aimDirection;
         aimTransform.up = aimDirection;

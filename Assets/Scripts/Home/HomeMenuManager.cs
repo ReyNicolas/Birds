@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
@@ -13,45 +14,52 @@ public class HomeMenuManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI playerPointsLabel;
     [SerializeField] TextMeshProUGUI matchPointsLabel;
     [SerializeField] TextMeshProUGUI gamepadCount;
-    [SerializeField] TextMeshProUGUI maxPlayers;
+    [SerializeField] TextMeshProUGUI keyboardPlayers;
     [SerializeField] TextMeshProUGUI errorMessage;
-    int gamepads = 0;
+    int gamepads, playerCount;
 
 
     private void Start()
     {
         SetPoinstPlayer();
         SetPoinstMatch();
-        CountGamepads();
         InputSystem.onDeviceChange += OnDeviceChange;
+        SetKeyboardPlayersCount();
     }
 
     void OnDeviceChange(InputDevice device, InputDeviceChange change)
     {
-        CountGamepads();
+        CountPlayers();
     }
-    public void CountGamepads()
+    public void CountPlayers()
     {
         gamepads = Gamepad.all.Count;
+        playerCount = matchData.KeyboardPlayersCount + gamepads;
         gamepadCount.text = gamepads.ToString();
+        ActivePlayerPanels();
+    }
+
+    void ActivePlayerPanels()
+    {
         playersPanels.ForEach(pp => pp.gameObject.SetActive(false));
-        for (int i = 0; i < gamepads; i++)
+        for (int i = 0; i < Math.Min(playerCount, playersDatas.Count); i++)
         {
+            playersDatas[i].PlayerColor = matchData.posibleBirdsColors[i];
             playersPanels[i].gameObject.SetActive(true);
-            playersPanels[i].SetMyPlayer(playersDatas[i]);            
+            playersPanels[i].SetMyPlayer(playersDatas[i]);
         }
     }
 
     public void StartMatch()
     {
-        if (gamepads == 0)
+        playerCount = matchData.KeyboardPlayersCount + gamepads;
+        if (playerCount == 0)
         {
-            errorMessage.text = "Add at least one gamepad";
+            errorMessage.text = "Add at least one gamepad or keyboard";
             return;
         }
-        var totalPlayers = int.Parse(maxPlayers.text);
 
-       matchData.playersDatas = playersDatas.Take(gamepads).ToList();
+       matchData.playersDatas = playersDatas.Take(playerCount).ToList();
 
         InputSystem.onDeviceChange -= OnDeviceChange;
         matchData.Initialize();
@@ -66,6 +74,11 @@ public class HomeMenuManager : MonoBehaviour
     public void SetPoinstMatch()
     {
         matchData.totalPointsLimit = int.Parse(matchPointsLabel.text);
+    }
+    public void SetKeyboardPlayersCount()
+    {
+        matchData.KeyboardPlayersCount = int.Parse(keyboardPlayers.text);
+        CountPlayers();
     }
 }
 

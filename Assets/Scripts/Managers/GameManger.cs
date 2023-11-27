@@ -1,14 +1,23 @@
 using System.Collections.Generic;
+using UniRx;
 using UnityEngine;
+using UnityEngine.InputSystem.Users;
+using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class GameManger : MonoBehaviour
 {
     [SerializeField]MatchSO matchData;
+    [SerializeField] GameObject optionsGO;
     [SerializeField]List<UIPlayerPanel> playerPanels;
+
     BirdGenerator birdGenerator;
     PowerGenerator powerGenerator;
     PositionGenerator positionGenerator;
     PositionGenerator positionGeneratorWithPercentMargin;
+
+    CompositeDisposable disposables;
+
     private void Awake()
     {
         CreateBirdGenerator();
@@ -18,24 +27,39 @@ public class GameManger : MonoBehaviour
         matchData.Initialize();
         Branch.OnPointsToColor += GivePointsToPlayer;
     }
+    private void Start()
+    {
+        disposables = new CompositeDisposable(
+            matchData.winnerData
+            .Where(winner => winner != null)
+            .Subscribe(_ => StopGame()));
+
+            matchData.playersDatas
+            .ForEach(playerData
+                => disposables.Add(  // add disposable playerData
+                           playerData.PointsToAdd
+                           .Subscribe(value => matchData.CheckWinner(value)))
+            );
+    }
+
     private void OnDestroy()
     {
+        disposables.Dispose();
         Branch.OnPointsToColor -= GivePointsToPlayer;
     }
 
-
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.O))// to test
+        if (Input.GetKeyDown(KeyCode.R))
         {
-            birdGenerator.GenerateBird();
+            Restart();
         }
-
-        if (Input.GetKeyDown(KeyCode.P))// to test
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
-            powerGenerator.GeneratePower();
+            optionsGO.SetActive(!optionsGO.activeSelf);
         }
     }
+
     void SetPlayers()
     {
         for (int i = 0; i < matchData.playersDatas.Count; i++)
@@ -43,7 +67,34 @@ public class GameManger : MonoBehaviour
             var playerData = matchData.playersDatas[i];
             playerData.PlayerColor = matchData.posibleBirdsColors[i];
             playerPanels[i].Initiaze(playerData);
+
+            GameObject playerGO = Instantiate(matchData.playerPrefab);
+            playerGO
+                .GetComponent<Player>()
+                .Initialize(playerData);
+
+            if(i < matchData.KeyboardPlayersCount)
+            {
+                SetKeyboardInput(i, playerGO.GetComponent<PlayerInput>());
+            }
+            else
+            {
+                 SetGamepadInput(i - matchData.KeyboardPlayersCount, playerGO.GetComponent<PlayerInput>());
+            }
         }
+    }
+    void SetKeyboardInput(int index, PlayerInput playerInput)
+    {
+        playerInput.user.UnpairDevices();
+        InputUser.PerformPairingWithDevice(Keyboard.current, user: playerInput.user);
+        playerInput.SwitchCurrentActionMap("Keyboard" + index);
+    }
+
+    void SetGamepadInput(int index, PlayerInput playerInput)
+    {
+        playerInput.user.UnpairDevices();
+        InputUser.PerformPairingWithDevice(Gamepad.all[index], user: playerInput.user);
+        playerInput.SwitchCurrentActionMap("Gamepad"); 
     }
 
     void CreatePowerGenerator()
@@ -65,6 +116,20 @@ public class GameManger : MonoBehaviour
         var playerDataToAddPoints = matchData.playersDatas.Find(pd => pd.PlayerColor == color);
         if (playerDataToAddPoints != null)
             playerDataToAddPoints.PointsToAdd.Value += points;
+    }
+
+    void StopGame()
+        => Time.timeScale = 0;
+
+    public void Restart()
+    {
+        Time.timeScale = 1;
+        SceneManager.LoadScene(matchData.matchScene);
+    }
+    public void ReturnHomeMenu()
+    {
+        Time.timeScale = 1;
+        SceneManager.LoadScene(matchData.homeMenuScene);
     }
 
 }
