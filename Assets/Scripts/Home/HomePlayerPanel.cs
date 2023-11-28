@@ -13,5 +13,7 @@ public class HomePlayerPanel : MonoBehaviour
         this.playerData = playerData;
         playerName.text = playerData.PlayerName;
         playerName.color = playerData.PlayerColor;
+        Debug.Log(playerData.InputDevice);
+        playerImage.sprite =  Resources.Load<Sprite>(playerData.InputDevice);
     }
 }

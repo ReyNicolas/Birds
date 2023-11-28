@@ -6,7 +6,7 @@ Welcome to the prototype of "Birds"!, casual local multiplayer game up to 4 play
 ## Controls 
 Gamepad       | Keyboard Left | Keyboard Right | Action
 Left stick    | WASD          | Arrows         | Move / Aim Fruit
-Right Trigger | Space         | Enter numpad   | press to Aim Fruit, release to shoot Fruit
+Right Trigger | Space         | Enter/Enter num| press to Aim Fruit, release to shoot Fruit
 
 ## Gameplay
 There are branches in the scene, you have to complete de branch with birds of your color to gain points. Shoot fruits to make birds follow them or to scare birds of other colors. Birds follow or escape from fruits for a short time fruits. There are powers that appears in scene which made active when a fruit or a birds collision with it.

@@ -46,6 +46,16 @@ public class HomeMenuManager : MonoBehaviour
         {
             playersDatas[i].PlayerColor = matchData.posibleBirdsColors[i];
             playersPanels[i].gameObject.SetActive(true);
+
+            if (i < matchData.KeyboardPlayersCount)
+            {
+                playersDatas[i].InputDevice = "Keyboard" + (i + 1);
+            }
+            else
+            {
+                playersDatas[i].InputDevice = "Gamepad" + ((i +1 ) - matchData.KeyboardPlayersCount);
+            }
+
             playersPanels[i].SetMyPlayer(playersDatas[i]);
         }
     }
