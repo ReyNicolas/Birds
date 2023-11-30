@@ -16,6 +16,7 @@ public class GameManger : MonoBehaviour
     PowerGenerator powerGenerator;
     PositionGenerator positionGenerator;
     PositionGenerator positionGeneratorWithPercentMargin;
+    InputSetterManager inputSetterManager = new InputSetterManager();
     float birdTimer;
     float powerTimer;
 
@@ -28,37 +29,80 @@ public class GameManger : MonoBehaviour
         SetPlayers();
 
         matchData.Initialize();
-        
+
+        SubscribeActions();
+    }
+    void CreateBirdGenerator()
+    {
+        positionGenerator = new PositionGenerator();
+        positionGenerator.SetDimension();
+        birdGenerator = new BirdGenerator(matchData.birdsPrefabs, matchData.posibleBirdsColors, positionGenerator);
+    }
+    void CreatePowerGenerator()
+    {
+        positionGeneratorWithPercentMargin = new PositionGenerator();
+        positionGeneratorWithPercentMargin.SetDimension(matchData.percentMarginRespawn);
+        powerGenerator = new PowerGenerator(matchData, positionGeneratorWithPercentMargin);
+    }
+    void SetPlayers()
+    {
+        for (int i = 0; i < matchData.playersDatas.Count; i++)
+        {
+            var playerData = matchData.playersDatas[i];
+            playerData.PlayerColor = matchData.posibleBirdsColors[i];
+
+            GameObject playerGO = Instantiate(matchData.playerPrefab, spawnTransforms[i].position, Quaternion.identity);
+            playerGO.GetComponent<Player>().Initialize(playerData);
+            inputSetterManager.SetPlayerInput(playerData.InputDevice, playerGO.GetComponent<PlayerInput>());
+
+            playerPanels[i].Initiaze(playerData);
+        }
+    }
+    void SubscribeActions()
+    {
         Branch.OnPointsToColor += GivePointsToPlayer;
 
-        Bird.OnNewBird += (_=> matchData.numberBirdsInScene++);
+        Bird.OnNewBird += (_ => matchData.numberBirdsInScene++);
         Bird.OnDestroyBird += (_ => matchData.numberBirdsInScene--);
 
         Power.OnNewPower += (_ => matchData.numberPowersInScene++);
         Power.OnDestroyPower += (_ => matchData.numberPowersInScene--);
     }
+
+
     private void Start()
     {
-        disposables = new CompositeDisposable(
-            matchData.winnerData
-            .Where(winner => winner != null)
-            .Subscribe(_ => StopGame()));
-
-            matchData.playersDatas
-            .ForEach(playerData
-                => disposables.Add(  // add disposable playerData
-                           playerData.PointsToAdd
-                           .Subscribe(value => matchData.CheckWinner(value)))
-            );
-
+        SetDisposables();
+        SetTimers();
+    }
+    void SetTimers()
+    {
         birdTimer = matchData.timeToGenerateBird;
         powerTimer = matchData.timeToGeneratePower;
     }
+    void SetDisposables()
+    {
+        disposables = new CompositeDisposable(
+                    matchData.winnerData
+                    .Where(winner => winner != null)
+                    .Subscribe(_ => StopGame()));
+
+        matchData.playersDatas
+        .ForEach(playerData
+            => disposables.Add(  // add disposable playerData
+                       playerData.PointsToAdd
+                       .Subscribe(value => matchData.CheckWinner(value)))
+        );
+    }
+
 
     private void OnDestroy()
     {
         disposables.Dispose();
-
+        UnSubscribeActions();
+    }
+    void UnSubscribeActions()
+    {
         Branch.OnPointsToColor -= GivePointsToPlayer;
 
         Bird.OnNewBird -= (_ => matchData.numberBirdsInScene++);
@@ -70,21 +114,28 @@ public class GameManger : MonoBehaviour
 
     private void Update()
     {
-        birdTimer -= Time.deltaTime;
-        if(birdTimer <=0 && matchData.NumberBirdsIsLessMax())
-        {
-            birdTimer = matchData.timeToGenerateBird;
-            birdGenerator.GenerateBird();
-        }
-
+        TryGenerateBird();
+        TryGeneratePower();
+    }
+    void TryGeneratePower()
+    {
         powerTimer -= Time.deltaTime;
         if (powerTimer <= 0 && matchData.NumberPowersIsLessMax())
         {
             powerTimer = matchData.timeToGeneratePower;
-            powerGenerator.GeneratePower();
+            powerGenerator.Generate();
         }
-
     }
+    void TryGenerateBird()
+    {
+        birdTimer -= Time.deltaTime;
+        if (birdTimer <= 0 && matchData.NumberBirdsIsLessMax())
+        {
+            birdTimer = matchData.timeToGenerateBird;
+            birdGenerator.Generate();
+        }
+    }
+
 
     private void LateUpdate()
     {
@@ -98,56 +149,7 @@ public class GameManger : MonoBehaviour
         }
     }
 
-    void SetPlayers()
-    {
-        for (int i = 0; i < matchData.playersDatas.Count; i++)
-        {
-            var playerData = matchData.playersDatas[i];
-            playerData.PlayerColor = matchData.posibleBirdsColors[i];
-
-
-            GameObject playerGO = Instantiate(matchData.playerPrefab, spawnTransforms[i].position, Quaternion.identity);
-            playerGO.GetComponent<Player>().Initialize(playerData);
-
-            if(i < matchData.KeyboardPlayersCount) //First players take keyboards inputs
-            {
-                SetKeyboardInput(i, playerGO.GetComponent<PlayerInput>());
-            }
-            else
-            {
-                 SetGamepadInput(i - matchData.KeyboardPlayersCount, playerGO.GetComponent<PlayerInput>());
-            }
-
-            playerPanels[i].Initiaze(playerData);
-        }
-    }
-    void SetKeyboardInput(int index, PlayerInput playerInput)
-    {
-        playerInput.user.UnpairDevices();
-        InputUser.PerformPairingWithDevice(Keyboard.current, user: playerInput.user);
-        playerInput.SwitchCurrentActionMap("Keyboard" + index);
-    }
-
-    void SetGamepadInput(int index, PlayerInput playerInput)
-    {
-        playerInput.user.UnpairDevices();
-        InputUser.PerformPairingWithDevice(Gamepad.all[index], user: playerInput.user);
-        playerInput.SwitchCurrentActionMap("Gamepad"); 
-    }
-
-    void CreatePowerGenerator()
-    {
-        positionGeneratorWithPercentMargin = new PositionGenerator();
-        positionGeneratorWithPercentMargin.SetDimension(matchData.percentMarginRespawn);
-        powerGenerator = new PowerGenerator(matchData, positionGeneratorWithPercentMargin);
-    }
-
-    void CreateBirdGenerator()
-    {
-        positionGenerator = new PositionGenerator();
-        positionGenerator.SetDimension();
-        birdGenerator = new BirdGenerator(matchData.birdsPrefabs, matchData.posibleBirdsColors, positionGenerator);
-    }
+    
 
     void GivePointsToPlayer(int points, Color color)
     {
@@ -169,57 +171,6 @@ public class GameManger : MonoBehaviour
         Time.timeScale = 1;
         SceneManager.LoadScene(matchData.homeMenuScene);
     }
-
-}
-
-
-public class BirdGenerator
-{
-    List<GameObject> birdsPrefabs;
-    List<Color> colors;
-    PositionGenerator positionGenerator;
-
-    public BirdGenerator(List<GameObject> birdsPrefabs, List<Color> colors, PositionGenerator positionGenerator)
-    {
-        this.birdsPrefabs = birdsPrefabs;
-        this.colors = colors;
-        this.positionGenerator = positionGenerator;
-    }
-
-    public GameObject GenerateBird()
-    {
-        var birdGO = GameObject.Instantiate(GetRandomBirdPrefab());
-        positionGenerator.AssignPosition(birdGO);
-
-        birdGO.GetComponent<Bird>().SetColor(GetRandomColor());
-        return birdGO;        
-    }
-    GameObject GetRandomBirdPrefab() 
-        => birdsPrefabs[Random.Range(0, birdsPrefabs.Count)];
-
-    Color GetRandomColor()
-        => colors[Random.Range(0, colors.Count)];
-}
-
-public class PowerGenerator
-{
-    MatchSO matchData;
-    PositionGenerator positionGenerator;
-
-    public PowerGenerator(MatchSO matchData, PositionGenerator positionGenerator)
-    {
-        this.matchData = matchData;
-        this.positionGenerator = positionGenerator;
-    }
-
-    public GameObject GeneratePower()
-    {
-        var powerGO = GameObject.Instantiate(GetRandomPowerPrefab());
-        positionGenerator.AssignPosition(powerGO);
-        return powerGO;
-    }
-    GameObject GetRandomPowerPrefab()
-        => matchData.powersPrefabs[Random.Range(0, matchData.powersPrefabs.Count)];
 
 }
 

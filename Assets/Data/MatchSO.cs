@@ -15,7 +15,6 @@ public class MatchSO : ScriptableObject
     [Header("Players Settings")]
     public List<PlayerSO> playersDatas;
     public GameObject playerPrefab;
-    public int KeyboardPlayersCount;
 
     [Header("End conditions Settings")]
     public int totalPointsLimit;

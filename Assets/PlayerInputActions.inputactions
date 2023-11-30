@@ -50,7 +50,7 @@
             ]
         },
         {
-            "name": "Keyboard0",
+            "name": "Keyboard1",
             "id": "9c73ba89-111f-4a4d-95d7-e6706c27c10f",
             "actions": [
                 {
@@ -142,7 +142,7 @@
             ]
         },
         {
-            "name": "Keyboard1",
+            "name": "Keyboard2",
             "id": "2a5bacdd-b046-4896-8653-97de00ae6dfb",
             "actions": [
                 {
