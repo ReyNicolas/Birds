@@ -52,10 +52,13 @@ public class GameManger : MonoBehaviour
             playerData.PlayerColor = matchData.posibleBirdsColors[i];
 
             GameObject playerGO = Instantiate(matchData.playerPrefab, spawnTransforms[i].position, Quaternion.identity);
-            playerGO.GetComponent<Player>().Initialize(playerData);
-            inputSetterManager.SetPlayerInput(playerData.InputDevice, playerGO.GetComponent<PlayerInput>());
+            Player player = playerGO.GetComponent<Player>();
+            player.Initialize(playerData);
 
-            playerPanels[i].Initiaze(playerData);
+            playerPanels[i].gameObject.SetActive(true);
+            playerPanels[i].Initiaze(player);
+            
+            inputSetterManager.SetPlayerInput(playerData.InputDevice, playerGO.GetComponent<PlayerInput>());
         }
     }
     void SubscribeActions()

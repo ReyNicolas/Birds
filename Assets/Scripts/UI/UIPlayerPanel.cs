@@ -5,22 +5,29 @@ using UnityEngine;
 public class UIPlayerPanel : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI pointsTxt;
+    [SerializeField] GameObject launchImageGO;
+    [SerializeField] Player player;
     [SerializeField] PlayerSO playerData;
     CompositeDisposable disposables;
 
-    public void Initiaze(PlayerSO playerData)
+    public void Initiaze(Player player)
     {
-        this.playerData = playerData;
+        this.player = player;
+        this.playerData = player.playerData;
 
+        SetDisposables();
     }
 
-    private void Start()
+    void SetDisposables()
     {
         disposables = new CompositeDisposable()
         {
-            playerData.PointsToAdd.Subscribe(value => pointsTxt.text = value.ToString())
+            playerData.PointsToAdd.Subscribe(value => pointsTxt.text = value.ToString()),
+            player.shootTimer.Where(value=>value<0).Subscribe(value => launchImageGO.SetActive(true)),
+            player.shootTimer.Where(value=>value>=0).Subscribe(value => launchImageGO.SetActive(false))
         };
     }
+
     private void OnDestroy()
     {
         disposables.Dispose();

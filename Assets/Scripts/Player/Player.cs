@@ -1,22 +1,25 @@
+using UniRx;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
-    [SerializeField] PlayerSO playerData;
+    public PlayerSO playerData;
     [SerializeField] SpriteRenderer spriteRenderer;
     [SerializeField] GameObject fruitPrefab;
     [SerializeField] int force;
     [SerializeField] int speed;
+    [SerializeField] int shootCooldown;
     [SerializeField] Transform aimTransform;
     [SerializeField] Vector2 aimDirection;
     [SerializeField] Vector2 moveDirection;
     [SerializeField] PlayerInput playerInput;
     float waitTimer;
+    public ReactiveProperty<float> shootTimer = new ReactiveProperty<float>(0);
 
     private void Awake()
     {
-        Initialize(playerData); // just to test GameManger should initialize       
+        shootTimer.Value = shootCooldown;
     }
 
     public void Initialize(PlayerSO playerData)
@@ -28,9 +31,11 @@ public class Player : MonoBehaviour
     private void Update()
     {
         waitTimer -= Time.deltaTime;
-        if (playerInput.actions["Aim"].WasReleasedThisFrame())
+        shootTimer.Value -= Time.deltaTime;
+        if (playerInput.actions["Aim"].WasReleasedThisFrame() && shootTimer.Value <0)
         {
             waitTimer = 0.3f;
+            shootTimer.Value = shootCooldown;
             ShootFruit();
             return;
         }
