@@ -1,6 +1,7 @@
 using TMPro;
 using UniRx;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UIPlayerPanel : MonoBehaviour
 {
@@ -14,6 +15,8 @@ public class UIPlayerPanel : MonoBehaviour
     {
         this.player = player;
         this.playerData = player.playerData;
+        launchImageGO.GetComponent<Image>().color = playerData.PlayerColor;
+        pointsTxt.color = playerData.PlayerColor;
 
         SetDisposables();
     }
