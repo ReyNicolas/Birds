@@ -4,6 +4,7 @@ using UnityEngine;
 public class FatBird: Bird
 {
     [SerializeField] CapsuleCollider2D capsuleCollider2D;
+    [SerializeField] Transform mouthTransform;
     [SerializeField] LayerMask birdMask;
     float escapeRadius;
     protected override void Awake()
@@ -41,7 +42,7 @@ public class FatBird: Bird
                 collider =>
                 {
                     if (collider.TryGetComponent(out Bird bird) && bird!=this)
-                        bird.GetToEscapeObject(transform);
+                        bird.GetToEscapeObject(mouthTransform);
                 });
     }
 }

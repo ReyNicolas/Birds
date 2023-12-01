@@ -30,7 +30,7 @@ public class BirdsNoiseAudioController: MonoBehaviour
         while (true)
         {
             yield return new WaitForSeconds(0.1f);
-            noiseSource.volume += matchData.numberBirdsInScene > 0 ? 0.05f * matchData.numberBirdsInScene : -0.05f;
+            noiseSource.volume += matchData.numberBirdsInScene.Value > 0 ? 0.05f * matchData.numberBirdsInScene.Value : -0.05f;
             noiseSource.volume = math.max(noiseSource.volume, 0.1f);
         }
 

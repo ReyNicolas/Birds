@@ -51,12 +51,14 @@ MonoBehaviour:
   spriteRenderer: {fileID: 4818786148767231060}
   fruitPrefab: {fileID: 4866642461288084917, guid: eb3fbb252d4086f4cb8207d23027dea2, type: 3}
   force: 3
-  speed: 2
+  speed: 5
   shootCooldown: 5
   aimTransform: {fileID: 9051854857079895434}
   aimDirection: {x: 0, y: 0}
   moveDirection: {x: 0, y: 0}
   playerInput: {fileID: 3481047450597140048}
+  shootTimer:
+    value: 0
 --- !u!114 &3481047450597140048
 MonoBehaviour:
   m_ObjectHideFlags: 0

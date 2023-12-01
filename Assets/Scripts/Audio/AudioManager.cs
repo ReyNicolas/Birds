@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class AudioManager : MonoBehaviour
 {
-    [SerializeField] MatchSO matchData;
+    public MatchSO matchData;
     [SerializeField] AudioSource musicSource;
     [SerializeField] AudioSource interfaceSounds;
     CompositeDisposable disposables;

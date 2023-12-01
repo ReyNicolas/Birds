@@ -16,8 +16,8 @@ MonoBehaviour:
   matchScene: Match
   playersDatas:
   - {fileID: 11400000, guid: ec0f7bd3100884847a61ff394363c55c, type: 2}
+  - {fileID: 11400000, guid: 71c0c0edcb10aeb408d29bfb91e8ac4d, type: 2}
   playerPrefab: {fileID: 2312833011230508930, guid: 2a0d6578eee77e84ea43a613e4d964fa, type: 3}
-  KeyboardPlayersCount: 1
   totalPointsLimit: 20
   totalPlayerPointsLimit: 10
   timeLeft: 0
@@ -53,6 +53,22 @@ MonoBehaviour:
     value: 100
   volumeMultiplier: 25
   actualMusicToPlay:
-  - {fileID: 8300000, guid: 3f73c9f16a529794aba32a3e19205c6e, type: 3}
+  - {fileID: 8300000, guid: f86022851246245409f6a7524cc75414, type: 3}
+  - {fileID: 8300000, guid: b9057e7696bdc8a408269e278db9d49e, type: 3}
+  - {fileID: 8300000, guid: 21d60e6aed6feed44a0702f9930761fb, type: 3}
+  - {fileID: 8300000, guid: 8a1f0a2bcc8353849aa053939f300d78, type: 3}
+  - {fileID: 8300000, guid: d5ea241f91869ee45b29e21197a886ae, type: 3}
+  - {fileID: 8300000, guid: f59d9a4aeb717a2459db768c1fd1610e, type: 3}
+  - {fileID: 8300000, guid: 6ad415f5771754f4f9e59932b570ea17, type: 3}
+  - {fileID: 8300000, guid: 39dbe1bea66f28b4586edff94593967c, type: 3}
+  - {fileID: 8300000, guid: 05429068839dd724dabe037e7959b680, type: 3}
+  - {fileID: 8300000, guid: 27663072505b3bc41a643e88b32d181b, type: 3}
+  - {fileID: 8300000, guid: 52f511671c625f741964f2f6beda50e7, type: 3}
+  - {fileID: 8300000, guid: 11be9ab7499adf94891c3b51ab87e6f7, type: 3}
+  - {fileID: 8300000, guid: e5c48ad49ba3a5748bb1546c52453280, type: 3}
+  - {fileID: 8300000, guid: 1c2728e75ced8b04dae4351728f34ca8, type: 3}
+  - {fileID: 8300000, guid: 60bd46325035f7347b508d482dd6e571, type: 3}
+  - {fileID: 8300000, guid: 61f74a37e46c8cc4a9676098db7b06fe, type: 3}
+  - {fileID: 8300000, guid: 9add83a71497bb8488c3d784d04e8345, type: 3}
   winnerData:
     value: {fileID: 0}

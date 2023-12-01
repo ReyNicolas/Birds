@@ -31,7 +31,7 @@ public class MatchSO : ScriptableObject
     [Header("Birds Settings")]
     public List<GameObject> birdsPrefabs = new List<GameObject>();
     public List<Color> posibleBirdsColors = new List<Color>();
-    public int numberBirdsInScene;
+    public ReactiveProperty<int> numberBirdsInScene= new ReactiveProperty<int>();
     public int timeToGenerateBird;
     public int maxNumberOfBirds;
 
@@ -67,7 +67,7 @@ public class MatchSO : ScriptableObject
 
     public void Initialize()
     {
-        numberBirdsInScene = 0;
+        numberBirdsInScene.Value = 0;
         playersDatas.ForEach(playerData => playerData.Initialize());
         winnerData.Dispose();
         winnerData = new ReactiveProperty<PlayerSO>(null);
@@ -75,7 +75,7 @@ public class MatchSO : ScriptableObject
 
     public bool NumberBirdsIsLessMax()
     {
-        return numberBirdsInScene < maxNumberOfBirds;
+        return numberBirdsInScene.Value < maxNumberOfBirds;
     }
 
     public bool NumberPowersIsLessMax()

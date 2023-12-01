@@ -63,8 +63,8 @@ public class GameManger : MonoBehaviour
     {
         Branch.OnPointsToColor += GivePointsToPlayer;
 
-        Bird.OnNewBird += (_ => matchData.numberBirdsInScene++);
-        Bird.OnDestroyBird += (_ => matchData.numberBirdsInScene--);
+        Bird.OnNewBird += (_ => matchData.numberBirdsInScene.Value++);
+        Bird.OnDestroyBird += (_ => matchData.numberBirdsInScene.Value--);
 
         Power.OnNewPower += (_ => matchData.numberPowersInScene++);
         Power.OnDestroyPower += (_ => matchData.numberPowersInScene--);
@@ -106,8 +106,8 @@ public class GameManger : MonoBehaviour
     {
         Branch.OnPointsToColor -= GivePointsToPlayer;
 
-        Bird.OnNewBird -= (_ => matchData.numberBirdsInScene++);
-        Bird.OnDestroyBird -= (_ => matchData.numberBirdsInScene--);
+        Bird.OnNewBird -= (_ => matchData.numberBirdsInScene.Value++);
+        Bird.OnDestroyBird -= (_ => matchData.numberBirdsInScene.Value--);
 
         Power.OnNewPower -= (_ => matchData.numberPowersInScene++);
         Power.OnDestroyPower -= (_ => matchData.numberPowersInScene--);
@@ -147,6 +147,7 @@ public class GameManger : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             optionsGO.SetActive(!optionsGO.activeSelf);
+            Time.timeScale = optionsGO.activeSelf ? 0 : 1;
         }
     }
 

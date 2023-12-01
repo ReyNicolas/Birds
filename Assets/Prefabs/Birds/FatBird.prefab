@@ -422,6 +422,7 @@ MonoBehaviour:
   animator: {fileID: 4617190298720735023}
   myState: 0
   capsuleCollider2D: {fileID: 1793455782519648975}
+  mouthTransform: {fileID: 4512356956804952356}
   birdMask:
     serializedVersion: 2
     m_Bits: 128
