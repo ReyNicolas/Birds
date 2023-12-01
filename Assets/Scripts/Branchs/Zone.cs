@@ -6,8 +6,12 @@ public class Zone: MonoBehaviour
     public Bird myBird = null;
     public event Action<Bird> OnBirdEnter;
     [SerializeField] SpriteRenderer spriteRenderer;
+    Color originalColor;
 
-
+    private void Awake()
+    {
+        originalColor = spriteRenderer.color;
+    }
     public void SetMyBird(Bird aBird)
     {
         myBird = aBird;
@@ -23,7 +27,7 @@ public class Zone: MonoBehaviour
         }
         if(myBird == null)
         {
-            spriteRenderer.color = Color.white;
+            spriteRenderer.color = originalColor;
         }
     }
 }

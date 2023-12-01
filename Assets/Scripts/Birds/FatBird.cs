@@ -9,7 +9,7 @@ public class FatBird: Bird
     protected override void Awake()
     {
         base.Awake();
-        escapeRadius = capsuleCollider2D.size.x;
+        escapeRadius = capsuleCollider2D.size.x * 0.5f;
         InvokeRepeating("ScareBirds", 0.1f, 0.1f);
     }
     protected override void OnTriggerEnter2D(Collider2D collision)
@@ -44,5 +44,4 @@ public class FatBird: Bird
                         bird.GetToEscapeObject(transform);
                 });
     }
-    
 }

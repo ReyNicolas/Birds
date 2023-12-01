@@ -26,10 +26,8 @@ public class GameManger : MonoBehaviour
     {
         CreateBirdGenerator();
         CreatePowerGenerator();
-        SetPlayers();
-
         matchData.Initialize();
-
+        SetPlayers();
         SubscribeActions();
     }
     void CreateBirdGenerator()
