@@ -14,7 +14,7 @@ public class Bird : MonoBehaviour
     [SerializeField] protected BirdState myState;
     int speed;
     protected BranchFinder branchFinder;
-    float stateTimer;
+    protected float stateTimer;
     protected Transform stateTransform;
 
     protected virtual void Awake()
@@ -40,11 +40,12 @@ public class Bird : MonoBehaviour
             case BirdState.Following:
                 FollowObject();
                 break;
+            case BirdState.MovingToZone:
+                FollowObject();
+                ArrivedObjetiveZone();
+                break;
             case BirdState.InAir:
                 TryFindZoneFromABranch();
-                break;
-            case BirdState.MovingToZone:
-                MoveToStateTransform();
                 break;
         }
 
@@ -52,11 +53,7 @@ public class Bird : MonoBehaviour
     }
     private void LateUpdate()
     {
-        transform.right = rb.velocity;
-        bodyTransform.localScale 
-            = (transform.up.y >= 0)
-                ? Vector2.up + Vector2.right 
-                : -Vector2.up +Vector2.right;
+        transform.up = rb.velocity;
 
     }
 
@@ -68,26 +65,15 @@ public class Bird : MonoBehaviour
         }
 
     }
-    protected virtual void OnTriggerEnter2D(Collider2D collision)
-    {
-        ArrivedObjetiveZone(collision);
-    }
-    void ArrivedObjetiveZone(Collider2D collision)
-    {
-        if (collision.TryGetComponent<Zone>(out Zone zone) && zone == zoneToMove)
+    void ArrivedObjetiveZone()
+    {        
+        if((zoneToMove.myBird == null||zoneToMove.myBird == this) && Vector2.Distance(zoneToMove.transform.position, transform.position) < 0.1f)
         {
-            if(zone.myBird !=null)
-            {
-                myState = BirdState.InAir;
-                return;
-            }
-
-            zone.SetMyBird(this);
+            zoneToMove.SetMyBird(this);
             rb.velocity = Vector3.zero;
-            rb.gravityScale = 0;
-            transform.SetPositionAndRotation(collision.transform.position, collision.transform.rotation);
+            transform.SetPositionAndRotation(zoneToMove.transform.position, zoneToMove.transform.rotation);
             myState = BirdState.InZone;
-        }
+        }        
     }
  
     private void OnTriggerExit2D(Collider2D collision)
@@ -98,7 +84,6 @@ public class Bird : MonoBehaviour
     {
         if (collision.TryGetComponent<Zone>(out Zone zone) && zone == zoneToMove)
         {
-            rb.gravityScale = 0.1f;
             zoneToMove = null;
             if (myState == BirdState.InZone) 
                 myState = BirdState.InAir;
@@ -121,7 +106,7 @@ public class Bird : MonoBehaviour
         stateTimer = birdData.FollowTime;
         myState = BirdState.Following;
     }
-    public void GetToEscapeObject(Transform transformToEscape)
+    public virtual void GetToEscapeObject(Transform transformToEscape)
     {
         stateTransform = transformToEscape;
         stateTimer = birdData.FollowTime;
@@ -160,8 +145,9 @@ public class Bird : MonoBehaviour
             ?.TryGiveMeCloseZone(transform.position);
         if (zoneToMove != null)
         {
-            myState = BirdState.Following;
+            myState = BirdState.MovingToZone;
             stateTransform = zoneToMove.transform;
+            stateTimer = 1;
         }
     }         
     void TryEndStateWithTimer()
@@ -184,8 +170,8 @@ public class Bird : MonoBehaviour
 public enum BirdState
 {
     InZone,
-    InAir,
     MovingToZone,
+    InAir,
     Escaping,
     Following
 }

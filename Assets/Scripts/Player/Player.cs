@@ -34,9 +34,9 @@ public class Player : MonoBehaviour
         shootTimer.Value -= Time.deltaTime;
         if (playerInput.actions["Aim"].WasReleasedThisFrame() && shootTimer.Value <0)
         {
-            waitTimer = 0.3f;
-            shootTimer.Value = shootCooldown;
+            if (aimDirection == Vector2.zero) return;
             ShootFruit();
+            SetCooldown();
             return;
         }
         if (playerInput.actions["Aim"].IsPressed())
@@ -47,6 +47,12 @@ public class Player : MonoBehaviour
 
         if (waitTimer<0)
             Move();
+    }
+
+    void SetCooldown()
+    {
+        waitTimer = 0.3f;
+        shootTimer.Value = shootCooldown;
     }
 
     void Move()

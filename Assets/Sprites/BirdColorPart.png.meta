@@ -48,7 +48,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 410
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -153,11 +153,11 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 0
-        width: 140
-        height: 101
+        y: 35
+        width: 146
+        height: 242
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -173,12 +173,12 @@ TextureImporter:
       name: BirdColorPart_1
       rect:
         serializedVersion: 2
-        x: 199
+        x: 230
         y: 0
-        width: 140
-        height: 101
+        width: 450
+        height: 312
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -186,69 +186,6 @@ TextureImporter:
       bones: []
       spriteID: b2a89ba67900cd04dbdd78b19df7651d
       internalID: -1413662600
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: BirdColorPart_2
-      rect:
-        serializedVersion: 2
-        x: 375
-        y: 0
-        width: 140
-        height: 113
-      alignment: 9
-      pivot: {x: 0.50417787, y: 0.43788555}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 36a169107b589684f858216991533e0d
-      internalID: 861018474
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: BirdColorPart_3
-      rect:
-        serializedVersion: 2
-        x: 556
-        y: 7
-        width: 142
-        height: 101
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: b6febdb28a1cb1a44b1825a4390b3a59
-      internalID: 1935391216
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: BirdColorPart_4
-      rect:
-        serializedVersion: 2
-        x: 750
-        y: 3
-        width: 140
-        height: 105
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: a96f88b265c24674c9ef59fcbaf80f08
-      internalID: -988411997
       vertices: []
       indices: 
       edges: []
@@ -266,9 +203,6 @@ TextureImporter:
     nameFileIdTable:
       BirdColorPart_0: 535597334
       BirdColorPart_1: -1413662600
-      BirdColorPart_2: 861018474
-      BirdColorPart_3: 1935391216
-      BirdColorPart_4: -988411997
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

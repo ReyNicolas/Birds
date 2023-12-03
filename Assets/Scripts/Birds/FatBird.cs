@@ -13,11 +13,16 @@ public class FatBird: Bird
         escapeRadius = capsuleCollider2D.size.x * 0.5f;
         InvokeRepeating("ScareBirds", 0.1f, 0.1f);
     }
-    protected override void OnTriggerEnter2D(Collider2D collision)
+    protected  void OnTriggerEnter2D(Collider2D collision)
     {
-        base.OnTriggerEnter2D(collision);
         if (collision.TryGetComponent<Zone>(out Zone zone))
             zone.SetMyBird(this);
+    }
+
+    public override void GetToEscapeObject(Transform transformToEscape)
+    {
+        if (transformToEscape.GetComponent<Mouth>()) return;
+        base.GetToEscapeObject(transformToEscape);
     }
 
     protected override void TryFindZoneFromABranch()
@@ -28,8 +33,9 @@ public class FatBird: Bird
             ?.TryGiveMeCloseZoneFreeOrWithNormalBird(transform.position);
         if (zoneToMove != null)
         {
-            myState = BirdState.Following;
+            myState = BirdState.MovingToZone;
             stateTransform = zoneToMove.transform;
+            stateTimer = 1;
         }
     }
 
@@ -45,4 +51,7 @@ public class FatBird: Bird
                         bird.GetToEscapeObject(mouthTransform);
                 });
     }
+
+
+
 }

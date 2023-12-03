@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AngryTime: 4
   FollowTime: 4
-  DistanceToFind: 10
+  DistanceToFind: 20
   Speed: 1
   BranchMask:
     serializedVersion: 2

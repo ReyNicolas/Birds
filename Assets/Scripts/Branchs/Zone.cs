@@ -14,6 +14,7 @@ public class Zone: MonoBehaviour
     }
     public void SetMyBird(Bird aBird)
     {
+        if(myBird!=null) return;
         myBird = aBird;
         spriteRenderer.color = myBird.GetColor();
         OnBirdEnter?.Invoke(myBird);
