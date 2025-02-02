@@ -26,8 +26,8 @@ public class UIPlayerPanel : MonoBehaviour
         disposables = new CompositeDisposable()
         {
             playerData.PointsToAdd.Subscribe(value => pointsTxt.text = value.ToString()),
-            player.shootTimer.Where(value=>value<0).Subscribe(value => launchImageGO.SetActive(true)),
-            player.shootTimer.Where(value=>value>=0).Subscribe(value => launchImageGO.SetActive(false))
+            player.dashTimer.Where(value=>value<0).Subscribe(value => launchImageGO.SetActive(true)),// era shootTimer de Player
+            player.dashTimer.Where(value=>value>=0).Subscribe(value => launchImageGO.SetActive(false)) // era shootTimer Player
         };
     }
 

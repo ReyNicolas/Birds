@@ -1,3 +1,4 @@
+﻿using System.Collections;
 using UniRx;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -5,21 +6,28 @@ using UnityEngine.InputSystem;
 public class Player : MonoBehaviour
 {
     public PlayerSO playerData;
+    [Header("References")]
     [SerializeField] SpriteRenderer spriteRenderer;
-    [SerializeField] GameObject fruitPrefab;
-    [SerializeField] int force;
-    [SerializeField] int speed;
-    [SerializeField] int shootCooldown;
-    [SerializeField] Transform aimTransform;
-    [SerializeField] Vector2 aimDirection;
-    [SerializeField] Vector2 moveDirection;
+    [SerializeField] Rigidbody2D rigidbody2D;
     [SerializeField] PlayerInput playerInput;
-    float waitTimer;
-    public ReactiveProperty<float> shootTimer = new ReactiveProperty<float>(0);
+    [SerializeField] PlayerFruit fruitPrefab;
+    [Header("Movement info")]
+    [SerializeField] int speed;
+
+    [Header("Dash info")]
+    [SerializeField] int dashCooldown;
+    [SerializeField] float dashDuration;
+    [SerializeField] int dashForce;
+    public ReactiveProperty<float> dashTimer = new ReactiveProperty<float>(0);
+    bool isDashing;
+    WaitForSeconds waitForSeconds;
+
 
     private void Awake()
     {
-        shootTimer.Value = shootCooldown;
+        dashTimer.Value = dashCooldown;
+        waitForSeconds = new WaitForSeconds(dashDuration);
+        fruitPrefab.gameObject.SetActive(false);
     }
 
     public void Initialize(PlayerSO playerData)
@@ -30,50 +38,46 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        waitTimer -= Time.deltaTime;
-        shootTimer.Value -= Time.deltaTime;
-        if (playerInput.actions["Aim"].WasReleasedThisFrame() && shootTimer.Value <0)
-        {
-            if (aimDirection == Vector2.zero) return;
-            ShootFruit();
-            SetCooldown();
-            return;
-        }
-        if (playerInput.actions["Aim"].IsPressed())
-        {
-            Aim();
-            return;
-        }
-
-        if (waitTimer<0)
+        if (!isDashing) { 
+            dashTimer.Value -= Time.deltaTime;
             Move();
+            TryDash();
+        }
+        else
+        {
+
+        }
+        
+    }
+    public void ShootFruit()
+        => Instantiate(fruitPrefab, transform.position, Quaternion.identity)
+                            .Initialize(playerData.PlayerColor, rigidbody2D.velocity);
+
+
+    private void TryDash()
+    {
+        if(playerInput.actions["Dash"].WasReleasedThisFrame() && dashTimer.Value < 0)
+        {
+            StartCoroutine(Dash());
+        }
     }
 
-    void SetCooldown()
+    IEnumerator Dash()
     {
-        waitTimer = 0.3f;
-        shootTimer.Value = shootCooldown;
+        isDashing = true;
+        rigidbody2D.velocity = rigidbody2D.velocity.normalized * dashForce;
+        fruitPrefab.gameObject.SetActive(true);
+
+        yield return waitForSeconds;
+
+        isDashing = false;
+        fruitPrefab.gameObject.SetActive(false);
+        dashTimer.Value = dashCooldown;
     }
 
     void Move()
     {
-        moveDirection = playerInput.actions["Move"].ReadValue<Vector2>();
-        moveDirection = moveDirection.normalized;
-        transform.Translate(moveDirection * speed * Time.deltaTime);
-    }
-
-    void Aim()
-    {
-        aimDirection = playerInput.actions["Move"].ReadValue<Vector2>();
-        aimDirection = aimDirection.normalized;
-        aimTransform.localPosition = aimDirection;
-        aimTransform.up = aimDirection;
-    }
-
-    void ShootFruit()
-        => Instantiate(fruitPrefab, transform.position, Quaternion.identity)
-                        .GetComponent<PlayerFruit>()
-                            .Initialize(playerData.PlayerColor, aimDirection * force);
-  
-
+        rigidbody2D.velocity = Vector2.ClampMagnitude(playerInput.actions["Move"].ReadValue<Vector2>(), 1) * speed;
+    } 
+    
 }

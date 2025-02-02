@@ -17,7 +17,7 @@ MonoBehaviour:
   playersDatas:
   - {fileID: 11400000, guid: ec0f7bd3100884847a61ff394363c55c, type: 2}
   - {fileID: 11400000, guid: 71c0c0edcb10aeb408d29bfb91e8ac4d, type: 2}
-  playerPrefab: {fileID: 2312833011230508930, guid: 2a0d6578eee77e84ea43a613e4d964fa, type: 3}
+  playerPrefab: {fileID: 2312833011230508930, guid: d92e471658e3e5046bfd6b719f0d31bc, type: 3}
   totalPointsLimit: 20
   totalPlayerPointsLimit: 10
   timeLeft: 0
@@ -39,7 +39,8 @@ MonoBehaviour:
   - {r: 0.47466475, g: 0.754717, b: 0.47603306, a: 1}
   - {r: 0.5238519, g: 0.73866487, b: 0.764151, a: 1}
   - {r: 0.7647059, g: 0.75680023, b: 0.5019608, a: 1}
-  numberBirdsInScene: 0
+  numberBirdsInScene:
+    value: 0
   timeToGenerateBird: 2
   maxNumberOfBirds: 20
   mixer: {fileID: 24100000, guid: bebf3698097e7774aab67d208a6734c2, type: 2}
